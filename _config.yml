@@ -1,30 +1,14 @@
-# Permalinks
-#
-# Use of `relative_permalinks` ensures post links from the index work properly.
-permalink:           pretty
-relative_permalinks: true
+# Site settings
+title: Learning by Doing
+email: nberserk@gmail.com
+description: > # this means to ignore newlines until "baseurl:"
+  Write an awesome description for your new site here. You can edit this
+  line in _config.yml. It will appear in your document head meta (for
+  Google search results) and in your feed.xml site description.
+baseurl: "" # the subpath of your site, e.g. /blog/
+url: "http://yourdomain.com" # the base hostname & protocol for your site
+twitter_username: darrenha
+github_username:  nberserk
 
-# Setup
-title:               What i learned
-tagline:             tagline
-url:                 http://nberserk.github.io
-paginate:            1
-baseurl:             ""
-
-# Assets
-#
-# We specify the directory for Jekyll so we can use @imports.
-sass:
-  sass_dir:          _sass
-  style:            :compressed
-
-# About/contact
-author:
-  name:              nberserk
-  url:               https://twitter.com/mdo
-  email:             nberserk@gmail.com
-
-# Custom vars
-version:             1.0.0
-github:              
-  repo:              "https://github.com/nberserk/nberserk.github.io"
+# Build settings
+markdown: kramdown
