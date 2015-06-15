@@ -1,0 +1,79 @@
+---
+layout: post
+title:  "Spark"
+tags: spark
+published: false
+---
+
+## 환경
+- spark 1.3.0 버전 기준임.
+- hadoop 2.3.0 기준
+
+## Standalone vs YARN
+Standalone 과 YARN 모드가 있다. MESOS는 안해봐서 패스. YARN으로 복수개의 스파크 잡을 스케쥴링 하거나 동시에 실행할 수 있어 프러덕션환경에서는 YARN이 필수라고 볼 수 있겠고 테스트 용도라면 Standalone이 설정하기 쉽다. 예를 들면, YARN으로는 몇개의 노드(컴)를 사용해서 이 잡을 실행해라는 것이 가능하지만 Standalone 모드는 항상 모든 노드를 사용한다. 
+
+## Standalone mode
+1. master가 될 컴퓨터에 spark 1.3.0 버전을 다운받아서 압축을 푼다
+2. conf/spark-env.sh 에 SPARK_\MASTER_IP 기입
+2. conf/slaves 에 slave ip들 기입 - 한줄에 하나씩
+3. spark 폴더 전체를 다른 slave에 복사
+4. master에서 .sbin/start-all.sh 실행
+5. http://<master ip>:8080/ 에 접속하면 spark web ui를 볼 수 있다.
+
+### YARN
+
+
+
+## 기타 설정들
+
+#### enabling spark event log
+conf/spark-defaults.conf 를 아래처럼.
+{% highlight text %}
+spark.eventLog.enabled true
+spark.eventLog.dir hdfs://xxxx/sparklogs
+{% endhighlight %}
+
+이렇게 하고 spark job을 실행하면 위에서 설정한 hdfs에 event log가 쌓이게 된다. 이 이벤트 로그는 spark의 history server를 통해서 볼 수 있다. sbin/start-history-server.sh 를 통해서 실행하면 되는데 그전에 로그 파일들이 어디에 있는지 지정을 해줘야 한다. 그것은 아래와 같은 환경 변수로 할 수 있다.
+
+`export SPARK_HISTORY_OPTS=" -Dspark.history.fs.logDirectory=hdfs://xxx/sparklog"`
+
+그후 histgory server를 실행하면, 실행한 컴의 http://<ip>:18080 으로 들어가면 web ui에서 각 잡의 logging을 볼 수 있다. 
+
+#### enabling log aggregation
+yarn-site.xml 에 아래 필드 추가 후 yarn daemon을 다시 띄우면 된다.
+{% highlight xml%}
+<property>
+    <name>yarn.log-aggregation-enable</name>
+    <value>true</value>
+  </property>
+{% endhighlight %}
+
+그럼 아래와 같은 식으로 log를 모아서 한번에 볼 수 있어서 편하다.
+`yarn logs -applicationId <app id>`
+
+
+
+
+
+
+
+
+You’ll find this post in your `_posts` directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run `jekyll serve`, which launches a web server and auto-regenerates your site when a file is updated.
+
+To add new posts, simply add a file in the `_posts` directory that follows the convention `YYYY-MM-DD-name-of-post.ext` and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.
+
+Jekyll also offers powerful support for code snippets:
+
+{% highlight ruby %}
+def print_hi(name)
+  puts "Hi, #{name}"
+end
+print_hi('Tom')
+#=> prints 'Hi, Tom' to STDOUT.
+{% endhighlight %}
+
+Check out the [Jekyll docs][jekyll] for more info on how to get the most out of Jekyll. File all bugs/feature requests at [Jekyll’s GitHub repo][jekyll-gh]. If you have questions, you can ask them on [Jekyll’s dedicated Help repository][jekyll-help].
+
+[jekyll]:      http://jekyllrb.com
+[jekyll-gh]:   https://github.com/jekyll/jekyll
+[jekyll-help]: https://github.com/jekyll/jekyll-help
