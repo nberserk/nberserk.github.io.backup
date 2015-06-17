@@ -1,8 +1,7 @@
 ---
 layout: post
-title:  "Spark"
+title:  "Spark 설정"
 tags: spark
-published: false
 ---
 
 ## 환경
@@ -14,19 +13,21 @@ Standalone 과 YARN 모드가 있다. MESOS는 안해봐서 패스. YARN으로 �
 
 ## Standalone mode
 1. master가 될 컴퓨터에 spark 1.3.0 버전을 다운받아서 압축을 푼다
-2. conf/spark-env.sh 에 SPARK_\MASTER_IP 기입
+2. conf/spark-env.sh 에 
+ 3. `SPARK_MASTER_IP` 에 master ip 기입
+ 4. `SPARK_LOCAL_IP` 에 자신의 ip 기입. 이것은 spark-env.sh보다는 환경변수에 해주는 것이 좋다. IP는 노드마다 다를테니까..
 2. conf/slaves 에 slave ip들 기입 - 한줄에 하나씩
 3. spark 폴더 전체를 다른 slave에 복사
 4. master에서 .sbin/start-all.sh 실행
 5. http://<master ip>:8080/ 에 접속하면 spark web ui를 볼 수 있다.
 
-### YARN
+## YARN
 
+1. `HADOOP_CONF_DIR` 환경변수 설정
+2. spark-shell --master yarn-client
+3. spark-submit --class --master yarn-cluster xxxx.jar 
 
-
-## 기타 설정들
-
-#### enabling spark event log
+## enabling spark event log
 conf/spark-defaults.conf 를 아래처럼.
 {% highlight text %}
 spark.eventLog.enabled true
@@ -39,7 +40,7 @@ spark.eventLog.dir hdfs://xxxx/sparklogs
 
 그후 histgory server를 실행하면, 실행한 컴의 http://<ip>:18080 으로 들어가면 web ui에서 각 잡의 logging을 볼 수 있다. 
 
-#### enabling log aggregation
+## enabling log aggregation
 yarn-site.xml 에 아래 필드 추가 후 yarn daemon을 다시 띄우면 된다.
 {% highlight xml%}
 <property>
@@ -58,22 +59,3 @@ yarn-site.xml 에 아래 필드 추가 후 yarn daemon을 다시 띄우면 된�
 
 
 
-You’ll find this post in your `_posts` directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run `jekyll serve`, which launches a web server and auto-regenerates your site when a file is updated.
-
-To add new posts, simply add a file in the `_posts` directory that follows the convention `YYYY-MM-DD-name-of-post.ext` and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.
-
-Jekyll also offers powerful support for code snippets:
-
-{% highlight ruby %}
-def print_hi(name)
-  puts "Hi, #{name}"
-end
-print_hi('Tom')
-#=> prints 'Hi, Tom' to STDOUT.
-{% endhighlight %}
-
-Check out the [Jekyll docs][jekyll] for more info on how to get the most out of Jekyll. File all bugs/feature requests at [Jekyll’s GitHub repo][jekyll-gh]. If you have questions, you can ask them on [Jekyll’s dedicated Help repository][jekyll-help].
-
-[jekyll]:      http://jekyllrb.com
-[jekyll-gh]:   https://github.com/jekyll/jekyll
-[jekyll-help]: https://github.com/jekyll/jekyll-help
