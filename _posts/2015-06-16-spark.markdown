@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Spark 설정"
+title:  "Spark 설치 및 설정"
 tags: spark
 ---
 
@@ -9,15 +9,16 @@ tags: spark
 - hadoop 2.3.0 기준
 
 ## Standalone vs YARN
-Standalone 과 YARN 모드가 있다. MESOS는 안해봐서 패스. YARN으로 복수개의 스파크 잡을 스케쥴링 하거나 동시에 실행할 수 있어 프러덕션환경에서는 YARN이 필수라고 볼 수 있겠고 테스트 용도라면 Standalone이 설정하기 쉽다. 예를 들면, YARN으로는 몇개의 노드(컴)를 사용해서 이 잡을 실행해라는 것이 가능하지만 Standalone 모드는 항상 모든 노드를 사용한다. 
+deploy 방법에는 Standalone 과 YARN 모드가 있다. MESOS는 안해봐서 패스. YARN으로 복수개의 스파크 잡을 스케쥴링 하거나 동시에 실행할 수 있어 프러덕션환경에서는 YARN이 필수라고 볼 수 있겠고 테스트 용도라면 Standalone이 설정하기 쉽다.
+예를 들면, Standalone은 실행중일때 다른 스파크 잡이 들어오면 무시되지만, YARN은 그 잡을 스케쥴링 해서 수행하고 있는 잡이 끝나면 실행해 준다. 스파크 클러스터의 사용자가 많아지고 잡이 많아지면 YARN은 필수 되겠다. 
 
 ## Standalone mode
 1. master가 될 컴퓨터에 spark 1.3.0 버전을 다운받아서 압축을 푼다
 2. conf/spark-env.sh 에 
  3. `SPARK_MASTER_IP` 에 master ip 기입
- 4. `SPARK_LOCAL_IP` 에 자신의 ip 기입. 이것은 spark-env.sh보다는 환경변수에 해주는 것이 좋다. IP는 노드마다 다를테니까..
-2. conf/slaves 에 slave ip들 기입 - 한줄에 하나씩
-3. spark 폴더 전체를 다른 slave에 복사
+ 4. ~~`SPARK_LOCAL_IP` 에 자신의 ip 기입. 이것은 spark-env.sh보다는 환경변수에 해주는 것이 좋다. IP는 노드마다 다를테니까.~~
+2. conf/slaves 에 slave ip 혹은 호스트 명을 기입 - 한줄에 하나씩
+3. spark 폴더 전체를 다른 slave에 복사. 앞서 설명한 [bash script]({% post_url 2015-06-11-hadoop-intro %})를 사용하면 쉽다.
 4. master에서 .sbin/start-all.sh 실행
 5. http://<master ip>:8080/ 에 접속하면 spark web ui를 볼 수 있다.
 

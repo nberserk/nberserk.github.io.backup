@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "hadoop 소개"
+title:  "hadoop 설치 및 설정"
 tags: hadoop hdfs yarn
 ---
 
@@ -34,11 +34,13 @@ dfs1
 dfs2
 {% endhighlight  %}
 * /etc/hadoop/hadoop-env.sh 에 있는 JAVA\_HOME, HADOOP\_HOME 변수의 값을 채워준다. 각 JDK및 HADOOP이 설치되어 있는 path를 적어주면 된다.
-* master에 있는 hadoop을 통째서 dfs1, dfs2에 카피해주기. 아래 bash script를 수정해서 사용하면 conf 하위 디렉토리를 커맨드 하나로 싱크 할 수 있다.
+* master에 있는 hadoop 폴더를을 dfs1, dfs2에 카피. 아래 bash script를 사용하면 `HADOOP_HOME` 폴더를 싱크할 수 있어 무지 편하다.
+
+<a name="rsync"></a>
 {% highlight bash%}
 for host in dfs1 dfs2 
 do 
-    rsync -rv $HADOOP_CONF_DIR/* $host:$HADOOP_CONF_DIR/
+    rsync -rv $HADOOP_CONF_DIR/ $host:$HADOOP_CONF_DIR/
 done
 {% endhighlight %}
 
@@ -85,5 +87,5 @@ etc/hadoop/yarn-site.xml의 configuration 하위에 아래 property 추가.
 ## TroubleShooting
 
 - 우선 실행시 뜨는 콘솔의 에러내용을 보면 대락 실패원인을 알 수 있고 
-* 특정 노드가 안뜬다던가 하면, 그 노드의 /logs 폴더에 있는 로그를 살펴 보면 대략 알 수 있다.
+* 특정 노드가 안뜬다던가 하면, 그 노드의 /logs 폴더에 있는 로그를 살펴 보면 힌트를 얻을 수 있다.
 
