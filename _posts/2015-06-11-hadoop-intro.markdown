@@ -61,6 +61,7 @@ etc/hadoop/hdfs-site.xml의 configuration 하위에 아래 property 추가
     </property>
 {% endhighlight %}
 
+만약 하드 디스크가 여러개라면, dfs.data.dir에 마운트 된 경로를 추가해주면 된다. 경로1, 경로2 이런식으로.. 
 #### yarn 설정
 etc/hadoop/yarn-site.xml의 configuration 하위에 아래 property 추가. 
 {% highlight xml%}
@@ -78,6 +79,12 @@ etc/hadoop/yarn-site.xml의 configuration 하위에 아래 property 추가.
 - master인 dfs 컴에서 .sbin/start-dfs.sh를 실행.
 - jps 실행시, 마스터에서는 NameNode,SecondaryNameNode가 그외 노드에서는 DataNode가 보이면 OK.
 - master:50070 으로 접속하면 hdfs web ui를 볼 수 있다.
+
+#### stopping specific datanode
+
+``` 
+./bin/hadoop-daemon.sh --config ./etc/hadoop stop datanode
+```
 
 #### YARN
 - master인 dfs 컴에서 .sbin/start-yarn.sh을 실행
