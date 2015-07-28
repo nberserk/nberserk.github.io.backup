@@ -22,8 +22,8 @@ dfs2 : data node
 {% endhighlight  %}
 
 * 위 컴퓨터간에 ssh를 password없이 할 수 있게 서로 ssh key 등록
-* hadoop-2.3.x 버전을 master의  <`HADOOP_INSTALL_DIR`>에 untar
-* /etc/hosts에 컴퓨터 이름으로 찾아 갈 수 있게 dns 등록. 예> 0.0.0.0 dfs1 0.0.0.1 dfs2
+* hadoop-2.3.x 버전을 master의  `<HADOOP_INSTALL_DIR>`에 untar
+* /etc/hosts에 컴퓨터 이름으로 찾아 갈 수 있게 dns 등록. 예> `0.0.0.0 dfs1 0.0.0.1 dfs2`
 * /etc/hadoop/masters 에 master의 컴 이름인 dfs를 입력(한줄에 하나씩)
 {% highlight text %}
 dfs
@@ -61,14 +61,24 @@ etc/hadoop/hdfs-site.xml의 configuration 하위에 아래 property 추가
     </property>
 {% endhighlight %}
 
-만약 하드 디스크가 여러개라면, dfs.data.dir에 마운트 된 경로를 추가해주면 된다. 경로1, 경로2 이런식으로.. 
-#### yarn 설정
-etc/hadoop/yarn-site.xml의 configuration 하위에 아래 property 추가. 
+만약 하드 디스크가 여러개라면, dfs.data.dir에 마운트 된 경로를 추가해주면 된다. `경로1, 경로2` 이런식으로.. 
+#### YARN 설정
+etc/hadoop/yarn-site.xml의 configuration 하위에 아래 property 추가. resource manager를 어느 컴에 둘지를 설정. 
 {% highlight xml%}
 <property>
   <name>yarn.resourcemanager.hostname</name>
   <value>spark</value>
 </property>
+{% endhighlight %}
+
+이 외에도 log aggregation 을 enable하려면 yarn-site.xml에 아래의 property를 추가해 주면 된다.  그럼 아래와 같은 식으로 log를 모아서 한번에 볼 수 있어서 분석시에 유용하다. 
+`yarn logs -applicationId <app id>`
+
+{% highlight xml%}
+<property>
+    <name>yarn.log-aggregation-enable</name>
+    <value>true</value>
+  </property>
 {% endhighlight %}
 
 
@@ -81,7 +91,7 @@ etc/hadoop/yarn-site.xml의 configuration 하위에 아래 property 추가.
 - master:50070 으로 접속하면 hdfs web ui를 볼 수 있다.
 
 #### stopping specific datanode
-
+특정 datanode만 내리고 싶을때가 있는데 그때는 아래 명령어를 통해 특정ㅎ datanode를 kill 할 수 있다.
 ``` 
 ./bin/hadoop-daemon.sh --config ./etc/hadoop stop datanode
 ```
@@ -89,10 +99,13 @@ etc/hadoop/yarn-site.xml의 configuration 하위에 아래 property 추가.
 #### YARN
 - master인 dfs 컴에서 .sbin/start-yarn.sh을 실행
 - jps 실행시, master에서는 ResourceManager가, 그 외 노드에서는 NodeManager process가 보이면 제대로 뜬 것임.
-- master:8088 으로 접속하면 yarn web ui 를 볼 수 있다.
+- master:8088 으로 접속하면 yarn web ui 를 볼 수 있다. nodes 메뉴에서 위에서 설정한 slaves들이 다 보이면 정상 동작하고 있는 것이다. 
 
 ## TroubleShooting
 
 - 우선 실행시 뜨는 콘솔의 에러내용을 보면 대락 실패원인을 알 수 있고 
-* 특정 노드가 안뜬다던가 하면, 그 노드의 /logs 폴더에 있는 로그를 살펴 보면 힌트를 얻을 수 있다.
+- 특정 노드가 안뜬다던가 하면, 그 노드의 /logs 폴더에 있는 로그를 살펴 보면 힌트를 얻을 수 있다.
 
+
+## revision history
+* 2015/7/27 minor update
