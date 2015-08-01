@@ -9,7 +9,8 @@ tags: maven mvn assembly
 
 ## mvn configuration
 우선 assembly plugin을 사용하기 위해서 build/plugins 하위에 명시해 준다.
-```
+
+```xml
 <plugin>
   <artifactId>maven-assembly-plugin</artifactId>
   <version>2.5.5</version>
@@ -37,6 +38,7 @@ tags: maven mvn assembly
 ## assembly descriptor
 
 moduleSet은 메이븐 모듈의 관점에서 처리를 하는 것이고. 소스, 바이너리등의 처리를 할 수 있다. 아래처럼 하면 소스들을 archive로 카피해 준다. 
+
 ```xml
 <moduleSet>
   <useAllReactorProjects>true</useAllReactorProjects> <!--이것은 모든 모듈들에 대해서 처리를 하고 싶을때 사용한다. -->
@@ -67,7 +69,8 @@ moduleSet은 메이븐 모듈의 관점에서 처리를 하는 것이고. 소스
 </dependencySet>
 ```
 
-이 외에도 fileSet 을 사용해서 특정파일을 패키징할 수도 있다.
+이 외에도 fileSet 을 사용해서 특정파일이나 폴더를 패키징할 수도 있다.
+
 ```xml
 <fileSets>
   <fileSet>
