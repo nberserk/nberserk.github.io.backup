@@ -33,6 +33,18 @@ Host bas
 
 위 설정 파일은 `ssh bas`를 `ssh -i ~/.ssh/bastion.pem ec2-user@bastion -p 352` 로 해석 된다.
 
+## ssh tunneling
+특정 포트를 포트 포워딩할 수도 있다.
+
+```
+Host tunnel
+    HostName mysql
+    IdentityFile ~/.ssh/mysql.key
+    LocalForward 9906 127.0.0.1:3306
+    User mysqlUser
+```
+
+database컴의 3306 포트가 localhost:9906로 포트 포워딩 된다. localhost:9906에서 mysql의 웹에 접근할 수 있다. 
 
 ## proxyCommand
 TBD
@@ -40,6 +52,7 @@ TBD
 
 ## Reference
 - [ssh proxy](http://backdrift.org/transparent-proxy-with-ssh)
+- [ssh portforward](http://nerderati.com/2011/03/17/simplify-your-life-with-an-ssh-config-file/)
 
 
 ## revision history
