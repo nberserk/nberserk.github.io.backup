@@ -34,7 +34,7 @@ Host bas
 위 설정 파일은 `ssh bas`를 `ssh -i ~/.ssh/bastion.pem ec2-user@bastion -p 352` 로 해석 된다.
 
 ## ssh tunneling
-특정 포트를 포트 포워딩할 수도 있다.
+특정 포트를 포트 포워딩할 수도 있다. 보통 회사의 네트웍 같은 경우 80 포트를 제외한 나머지는 모두 방화벽으로 막혀 있는 경우가 많은데 이럴때 유용하게 사용할 수 있다.
 
 ```
 Host tunnel
@@ -45,7 +45,13 @@ Host tunnel
 ```
 
 database컴의 3306 포트가 localhost:9906로 포트 포워딩 된다. localhost:9906에서 mysql의 웹에 접근할 수 있다. 
+## ControlPath
+control path를 사용하면 ssh connection을 캐쉬 해서 접속 시간을 줄일 수 있어, 반복적으로 ssh 명령을 불러야 할때 사용하면 유용하다.
 
+```
+Host *
+	ControlPath            ~/.ssh/mux-%r@%h:%p
+```
 ## proxyCommand
 TBD
 
@@ -57,5 +63,6 @@ TBD
 
 ## revision history
 * 2015/8/24 initial draft
+* 8/28 ControlPath added
 
 
