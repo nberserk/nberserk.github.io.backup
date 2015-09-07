@@ -12,14 +12,19 @@ fork 한후 upstream에 있는 변경사항을 주기적으로 싱크해야 할�
 upstream은 포크 하기전 원본 저장소를 칭하는 것
 
 ```bash
-git remote add apache git@github.com/whoever/whatever.git
+git remote add apache git@github.com:whoever/whatever.git
 git fetch apache # update from remote
 # make tracking branch 이렇게하면 upstream은 apache master와 싱크를 하게 된다.
-git checkout -b upstream apache/master 
+git checkout -b upstream apache/master
 
-# make topic branch
+# merge upstream with master; 최신 변경 사항을 master로 가지고 온다.
+git checkout master
+git merge upstream
+
+# make topic branch;
 git checkout -b topic # make topic branch
 git push -u origin topic # push topic branch to origin
+# 이 상태에서 github상에서 pull request를 요청하면 된다. 
 ```
 
 ## ssh key를 등록했음에도 아이디와 패스워드를 물어볼때

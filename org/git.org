@@ -1,0 +1,5 @@
+* git rebase after merge
+http://stackoverflow.com/questions/6248231/git-rebase-after-previous-git-merge
+* merge
+git merge v1.0 --no-commit --no-ff
+http://stackoverflow.com/questions/8640887/git-merge-without-auto-commit
