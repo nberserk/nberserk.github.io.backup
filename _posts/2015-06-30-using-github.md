@@ -13,7 +13,8 @@ upstream은 포크 하기전 원본 저장소를 칭하는 것
 
 ```bash
 git remote add apache git@github.com:whoever/whatever.git
-git fetch apache # update from remote
+git fetch apache # update apache remote
+git rebase apache/master # rebase apache/master to current branch(master)
 # make tracking branch 이렇게하면 upstream은 apache master와 싱크를 하게 된다.
 git checkout -b upstream apache/master
 
@@ -23,6 +24,19 @@ git merge upstream
 
 # make topic branch;
 git checkout -b topic # make topic branch
+git push -u origin topic # push topic branch to origin
+# 이 상태에서 github상에서 pull request를 요청하면 된다. 
+```
+
+## make topic branch
+
+포크한 repo에서 바로 작업을 하게 되면 나중에 apache/master를 rebase하기가 힘들어 진다. 그래서 토픽 브랜치를 만들어서 거기서 태스크를 위한 커밋을 하고, 준비가 되면 거기서 바로 pull request를 하고, 업스트림에 머지가 되면 그 토픽브랜치는 이제 더이상 필요가 없다. 그후 업스트림으로 부터 다시 리베이스를 하면 마스터 브랜치는 최신으로 유지가 가능하다. 
+
+```
+# assume current branch is master
+git checkout -b topic # make topic branch
+...
+git commit -m "..." 
 git push -u origin topic # push topic branch to origin
 # 이 상태에서 github상에서 pull request를 요청하면 된다. 
 ```
