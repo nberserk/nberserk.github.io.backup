@@ -1,0 +1,10 @@
+* bash
+** if
+#+BEGIN_SRC bash
+# checking first arg specified or not
+if [ -z "$1" ]; then    
+    folder=sparkjob
+else
+    folder=$1
+fi
+#+END_SRC

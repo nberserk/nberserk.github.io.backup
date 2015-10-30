@@ -1,0 +1,13 @@
+#+STARTUP: showall indent
+#+STARTUP: hidestars
+#+BEGIN_HTML
+---
+layout: post
+title: trait은 어떻게 동작하는가
+tags: scala trait
+published: true
+---
+#+END_HTML
+
+
+scala에 보면 trait 이라고 하는 애가 있다. rich interface라고도 불리고 기존 interface 가 지원하지 않는 것들을 지원하고 있다. 

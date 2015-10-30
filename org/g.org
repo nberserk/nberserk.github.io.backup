@@ -1,0 +1,56 @@
+* single linked list, reverse region
+
+#+BEGIN_SRC java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+ import java.util.ArrayList;
+ 
+public class Solution {
+    
+        
+    public ListNode reverseBetween(ListNode head, int m, int n) {
+        if(m==n) return head;
+        
+        int count=1;    
+        ListNode node = head;
+        ListNode before=null;
+        ListNode after=null;
+        
+        ListNode prev=null;
+        ListNode start=null;
+        ListNode end=null;
+        while(node!=null){
+            if(count>=m && count<=n){
+                if (count==m-1)   before = node;
+                else if(count==m) start = node;
+                else if(count==n) end=node;
+                
+                ListNode next = node.next;
+                node.next=prev;
+                prev = node;                
+                node=next;
+                count++;
+                continue;
+            }else if(count>n){
+                if (count == n+1) after=node;
+                break;
+            } 
+            node = node.next;            
+            count++;            
+        }
+        if (before!=null) before.next=end;
+        start.next=after;
+        
+        if(m==1) return end;
+        else return head;
+    }    
+    
+}
+#+END_SRC
+
