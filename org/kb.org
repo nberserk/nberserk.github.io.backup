@@ -1,10 +1,36 @@
 * bash
 ** if
-#+BEGIN_SRC bash
-# checking first arg specified or not
-if [ -z "$1" ]; then    
-    folder=sparkjob
-else
-    folder=$1
-fi
+#+BEGIN_SRC sh
+  # checking first arg specified or not
+  if [ -z "$1" ]; then    
+      folder=sparkjob
+  else
+      folder=$1
+  fi
+
+  s1='a'
+  s2='b'
+  if [ "$s1" = "$s2" ];  then
+      echo "equal"
+  else
+      echo 'not equal'
+  fi
+
+  #string compare
 #+END_SRC
+
+#+RESULTS:
+: not equal
+
+
+* aws
+** emr
+- doesn't run when no default VPC is absent. https://aws.amazon.com/premiumsupport/knowledge-center/deleted-default-vpc/
+- default vpc's 'DNS hostname' should be 'yes'. otherwise emr cluster will be terminated with error.
+
+* org
+** babel
+- insert code block. <s <tab>
+- run code block; C-c C-c
+
+* emacs
