@@ -42,4 +42,10 @@ you can draw rectangle using ascii.
    '(define-key artist-mode-map [(down-mouse-3)] 'artist-mouse-choose-operation)
    )
 #+END_SRC
+* spark sql
+- subquery 
+#+BEGIN_SRC sql
+select value, cnt from  ( select value, count(*) as cnt from user group by d order by d ) inner
+where inner.c > 5
+#+END_SRC
 
