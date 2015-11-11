@@ -34,3 +34,12 @@
 - run code block; C-c C-c
 
 * emacs
+** artist mode
+you can draw rectangle using ascii. 
+#+BEGIN_SRC lisp
+;; enable mouse right button
+(eval-after-load "artist"
+   '(define-key artist-mode-map [(down-mouse-3)] 'artist-mouse-choose-operation)
+   )
+#+END_SRC
+
