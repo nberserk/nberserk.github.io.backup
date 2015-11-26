@@ -22,6 +22,11 @@
 #+RESULTS:
 : not equal
 
+** nohup
+DO NOT terminate background job, when i log off.
+#+BEGIN_SRC bash
+nohup /path/to/command-name arg1 arg2 &
+#+END_SRC
 
 * aws
 ** emr
@@ -29,11 +34,13 @@
 - default vpc's 'DNS hostname' should be 'yes'. otherwise emr cluster will be terminated with error.
 
 * org
+- file link (org-insert-link)
 ** babel
 - insert code block. <s <tab>
 - run code block; C-c C-c
 
 * emacs
+- C-x C-e ; eval lisp last lexpr
 ** artist mode
 you can draw rectangle using ascii. 
 #+BEGIN_SRC lisp
@@ -42,6 +49,7 @@ you can draw rectangle using ascii.
    '(define-key artist-mode-map [(down-mouse-3)] 'artist-mouse-choose-operation)
    )
 #+END_SRC
+
 * spark sql
 - subquery 
 #+BEGIN_SRC sql
