@@ -33,6 +33,25 @@ nohup /path/to/command-name arg1 arg2 &
 - doesn't run when no default VPC is absent. https://aws.amazon.com/premiumsupport/knowledge-center/deleted-default-vpc/
 - default vpc's 'DNS hostname' should be 'yes'. otherwise emr cluster will be terminated with error.
 
+* avro
+- http://avro.apache.org/docs/1.7.7/gettingstartedjava.html
+
+* parquet 
+parquet은 columnar storage format
+
+
+schema resolution
+if the reader's record schema has a field that contains a default value, and writer's schema does not have a field with the same name, then the reader should use the default value from its field.
+if the reader's record schema has a field with no default value, and writer's schema does not have a field with the same name, an error is signalled.
+
+avro spec
+https://avro.apache.org/docs/1.7.7/spec.html
+
+- http://www.slideshare.net/cloudera/hadoop-summit-36479635?qid=ae3b9f6c-0e8d-4403-8048-46c1fe3a4b47&v=qf1&b=&from_search=3
+  - size 33p, speed comparison 34p
+
+convert existing data into parquet :  http://blog.cloudera.com/blog/2014/05/how-to-convert-existing-data-into-parquet/
+
 * org
 - file link (org-insert-link)
 ** babel
