@@ -76,3 +76,8 @@ select value, cnt from  ( select value, count(*) as cnt from user group by d ord
 where inner.c > 5
 #+END_SRC
 
+* jekyll
+on El-Capitan
+gem install --user-install --bindir ~/bin --no-document --pre --verbose jekyll
+
+https://github.com/jekyll/jekyll/issues/3984

@@ -6,12 +6,13 @@ layout: post
 title: parquet + avro
 tags: parquet
 date: 2015-12-09
+published: false
 ---
 #+END_HTML
 
 데이터 분석을 위해 파일을 저장해야 할 필요가 있었다. 처음에는 csv파일 형식으로 저장을 했는데, 시간이 지남에 따라서 새로운 컬럼이 생기는 요구사항이 생겼다. 이런 경우 csv는 어떤 정보가 몇번째 컬럼에 있는지를 기술하지 않기 때문에 또 다른 파일에 컬럼 정보를 기록하고 데이터 타입등도 기술을 해줘야 하는 불편함이 생긴다. 
 언뜻 parquet이 그런 일을 하는것이라 어렴풋이 알고 있었기 때문에 이번에 parquet을 적용해 볼겸 조사를 해봤다.
-
+   
 특징들..
 - 압축 지원. 50% 정도 세이브 할 수 있다고 함. 스토리지 비용이 반이라는 얘기.
 - 여러가지 serialize framework 지원 (Avro, Thrift, protocol buffer)

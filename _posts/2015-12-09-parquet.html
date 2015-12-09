@@ -1,118 +1,185 @@
-#+STARTUP: showall indent
-#+STARTUP: hidestars
-#+BEGIN_HTML
 ---
 layout: post
 title: parquet + avro
 tags: parquet
 date: 2015-12-09
+published: false
 ---
-#+END_HTML
 
+<p>
 데이터 분석을 위해 파일을 저장해야 할 필요가 있었다. 처음에는 csv파일 형식으로 저장을 했는데, 시간이 지남에 따라서 새로운 컬럼이 생기는 요구사항이 생겼다. 이런 경우 csv는 어떤 정보가 몇번째 컬럼에 있는지를 기술하지 않기 때문에 또 다른 파일에 컬럼 정보를 기록하고 데이터 타입등도 기술을 해줘야 하는 불편함이 생긴다. 
 언뜻 parquet이 그런 일을 하는것이라 어렴풋이 알고 있었기 때문에 이번에 parquet을 적용해 볼겸 조사를 해봤다.
+</p>
 
+<p>
 특징들..
-- 압축 지원. 50% 정도 세이브 할 수 있다고 함. 스토리지 비용이 반이라는 얘기.
-- 여러가지 serialize framework 지원 (Avro, Thrift, protocol buffer)
+</p>
+<ul class="org-ul">
+<li>압축 지원. 50% 정도 세이브 할 수 있다고 함. 스토리지 비용이 반이라는 얘기.</li>
+<li>여러가지 serialize framework 지원 (Avro, Thrift, protocol buffer)</li>
+</ul>
 
-* column based
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">column based</h2>
+<div class="outline-text-2" id="text-orgheadline1">
+<p>
 columnar storage다. 이렇게 접근한 이유는 크게 2가지.
+</p>
 
+<p>
 보통 쿼리를 할때 모든 컬럼의 정보가 다 필요한 경우는 많지 않다. row based 라면 전체 열을 다 읽어야 쿼리를 수행할 수 있지만, parquet는 필요한 컬럼만 로드하면 된다. 여기서 속도 향샹이 생긴다.
+</p>
 
+<p>
 그리고 컬럼끼리 모아서 압축을 하면 압축률이 더 좋아진다. timestamp를 가지는 컬럼이라고 생각하면 델터 인코딩 방식으로 압축을 하면 좋을 것이고, 각 컬럼의 특징이 살아 있으니 더 유리하다.
-<iframe src="//www.slideshare.net/slideshow/embed_code/key/jKNTsYfuHHgao?startSlide=33" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/cloudera/hadoop-summit-36479635" title="Efficient Data Storage for Analytics with Apache Parquet 2.0" target="_blank">Efficient Data Storage for Analytics with Apache Parquet 2.0</a> </strong> from <strong><a href="//www.slideshare.net/cloudera" target="_blank">Cloudera, Inc.</a></strong> </div>
+&lt;iframe src="//www.slideshare.net/slideshow/embed<sub>code</sub>/key/jKNTsYfuHHgao?startSlide=33" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen&gt; &lt;/iframe&gt; &lt;div style="margin-bottom:5px"&gt; &lt;strong&gt; &lt;a href="//www.slideshare.net/cloudera/hadoop-summit-36479635" title="Efficient Data Storage for Analytics with Apache Parquet 2.0" target="<sub>blank</sub>"&gt;Efficient Data Storage for Analytics with Apache Parquet 2.0&lt;/a&gt; &lt;/strong&gt; from &lt;strong&gt;&lt;a href="//www.slideshare.net/cloudera" target="<sub>blank</sub>"&gt;Cloudera, Inc.&lt;/a&gt;&lt;/strong&gt; &lt;/div&gt;
+</p>
 
+<p>
 N개의 배열에서 특정 range(start, end)의 구간합을 구한다고 생각해보자. naive로 하면 O(N)이 걸린다.
 각 배열의 값이 변하지 않는다고 가정하면 O(1)으로 값을 구할 수 있다. psum[N]을 선언하고 0~n까지의 합을 미리 계산하여 캐쉬하고 있으면 psum[end] - psum[start]로 구간합을 바로 구할 수 있다.
 만약 각 배열의 값이 변한다면 가장 효율적인 방법은 무엇일까.. 이때 segement tree로 값을 구할 수 있다. tree에서의 insert는 O(longN)이므로 segment tree를 생성할때는 O(NlogN)이 걸리고 query는 O(longN), update는 O(longN)이 걸린다.
+</p>
+</div>
+</div>
 
-* idea
+<div id="outline-container-orgheadline2" class="outline-2">
+<h2 id="orgheadline2">idea</h2>
+<div class="outline-text-2" id="text-orgheadline2">
+<p>
 heap이랑 구조가 비슷하다. root는 모든 범위의 합을 가지고 있고(0 to N-1), left node는 왼쪽 반, right node는 오른쪽 반을 가지게 계속 나누어서 트리를 구성하면 된다. 각 노드는 자신의 범위를 가지고 그 범위의 구간합을 계산하여 가진다. left와 right의 값이 같아질때까지 이것을 반복하면 segment tree가 완성되게 된다. 
 예를 들어, 4개의 원소가 있는 구간트리는 아래처럼 구성 되게 된다. 
-#+BEGIN_SRC c++
-                            +--------+
-                            | (0,3)  |
-                            +--------+
-                +--------+              +--------+
-                |  (0,1) |              |  (2,3) |
-                +--------+              +--------+
-          +--------+  +--------+   +--------+  +--------+
-          |  (0,0) |  |  (1,1) |   |   (2,2)|  |  (3,3) |
-          +--------+  +--------+   +--------+  +--------+
+</p>
+<div class="org-src-container">
 
-#+END_SRC
+<pre class="src src-c++">                  +--------+
+                  | (0,3)  |
+                  +--------+
+      +--------+              +--------+
+      |  (0,1) |              |  (2,3) |
+      +--------+              +--------+
++--------+  +--------+   +--------+  +--------+
+|  (0,0) |  |  (1,1) |   |   (2,2)|  |  (3,3) |
++--------+  +--------+   +--------+  +--------+
+</pre>
+</div>
+</div>
+</div>
 
-* implementation
+<div id="outline-container-orgheadline3" class="outline-2">
+<h2 id="orgheadline3">implementation</h2>
+<div class="outline-text-2" id="text-orgheadline3">
+<p>
 기본적으로 [start, end] 구간의 중간을 잡아서 왼쪽,오른쪽을 계속 recursive하게 수행하면 된다. 종료 조건은 start와 end가 같을때이다. 그리고 left child의 인덱스는 2*i+1이 되고, 오른쪽 차일드의 인덱스는 2*i+2가 된다. 
 그리고 트리의 길이는 원 배열 길이의 4배 정도를 잡아주면 된다. 
-** build
+</p>
+</div>
+<div id="outline-container-orgheadline4" class="outline-3">
+<h3 id="orgheadline4">build</h3>
+<div class="outline-text-3" id="text-orgheadline4">
+<p>
 위 전제조건으로 구현해 보면 아래처럼 포현할 수 있다. 
-#+BEGIN_SRC c++
-  /**
-   a: input array
-  tree: segment tree
-   i: index of segment tree  
-   ,*/ 
-  int build(int* a, int* tree, int start, int end, int i){
-      if (start==end){
-          tree[i] = a[start];
-          return tree[i];
-      }
+</p>
+<div class="org-src-container">
 
-      int m = (end-start)/2;
-      tree[i] = build(a,tree, start, m, 2*i+1) +
-          build(a, tree, m+1, end, 2*i+2);
-      return tree[i];
-  }
+<pre class="src src-c++"><span style="color: #99968b;">/**</span>
+<span style="color: #99968b;"> a: input array</span>
+<span style="color: #99968b;">tree: segment tree</span>
+<span style="color: #99968b;"> i: index of segment tree  </span>
+<span style="color: #99968b;"> */</span> 
+<span style="color: #92a65e; font-weight: bold;">int</span> <span style="color: #cae682;">build</span>(<span style="color: #92a65e; font-weight: bold;">int</span>* <span style="color: #cae682;">a</span>, <span style="color: #92a65e; font-weight: bold;">int</span>* <span style="color: #cae682;">tree</span>, <span style="color: #92a65e; font-weight: bold;">int</span> <span style="color: #cae682;">start</span>, <span style="color: #92a65e; font-weight: bold;">int</span> <span style="color: #cae682;">end</span>, <span style="color: #92a65e; font-weight: bold;">int</span> <span style="color: #cae682;">i</span>){
+    <span style="color: #8ac6f2; font-weight: bold;">if</span> (start==end){
+        tree[i] = a[start];
+        <span style="color: #8ac6f2; font-weight: bold;">return</span> tree[i];
+    }
 
-#+END_SRC
-** query
+    <span style="color: #92a65e; font-weight: bold;">int</span> <span style="color: #cae682;">m</span> = (end-start)/2;
+    tree[i] = build(a,tree, start, m, 2*i+1) +
+        build(a, tree, m+1, end, 2*i+2);
+    <span style="color: #8ac6f2; font-weight: bold;">return</span> tree[i];
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline5" class="outline-3">
+<h3 id="orgheadline5">query</h3>
+<div class="outline-text-3" id="text-orgheadline5">
+<p>
 세그먼트 트리를 만들었으니 이제 임의의 범위를 주면 그 합을 리턴해주는 query함수를 만들어 보자.
-#+BEGIN_SRC c++
-  // start,end : start/end index of tree
-  // qs, qe : query start/end index
-  int query(int*st, int qs, int qe, int start, int end, int i){
-      // 구간을 벗어남
-      if (qe<start || qs>start){
-          return 0;
-      }
-      // 쿼리가 범위 안에 있음
-      if (qs<=start && end<=qe){
-          return st[i];
-      }
+</p>
+<div class="org-src-container">
 
-      // 걸쳐 있는 경우
-      int m = (end-start)/2;
-      return query(st,qs,qe,start, m, 2*i+1) + query(st, qs, qe, m+1,end,2*i+2);
-  }
-#+END_SRC
-** update
+<pre class="src src-c++"><span style="color: #99968b;">// </span><span style="color: #99968b;">start,end : start/end index of tree</span>
+<span style="color: #99968b;">// </span><span style="color: #99968b;">qs, qe : query start/end index</span>
+<span style="color: #92a65e; font-weight: bold;">int</span> <span style="color: #cae682;">query</span>(<span style="color: #92a65e; font-weight: bold;">int</span>*<span style="color: #cae682;">st</span>, <span style="color: #92a65e; font-weight: bold;">int</span> <span style="color: #cae682;">qs</span>, <span style="color: #92a65e; font-weight: bold;">int</span> <span style="color: #cae682;">qe</span>, <span style="color: #92a65e; font-weight: bold;">int</span> <span style="color: #cae682;">start</span>, <span style="color: #92a65e; font-weight: bold;">int</span> <span style="color: #cae682;">end</span>, <span style="color: #92a65e; font-weight: bold;">int</span> <span style="color: #cae682;">i</span>){
+    <span style="color: #99968b;">// </span><span style="color: #99968b;">&#44396;&#44036;&#51012; &#48279;&#50612;&#45224;</span>
+    <span style="color: #8ac6f2; font-weight: bold;">if</span> (qe&lt;start || qs&gt;start){
+        <span style="color: #8ac6f2; font-weight: bold;">return</span> 0;
+    }
+    <span style="color: #99968b;">// </span><span style="color: #99968b;">&#53244;&#47532;&#44032; &#48276;&#50948; &#50504;&#50640; &#51080;&#51020;</span>
+    <span style="color: #8ac6f2; font-weight: bold;">if</span> (qs&lt;=start &amp;&amp; end&lt;=qe){
+        <span style="color: #8ac6f2; font-weight: bold;">return</span> st[i];
+    }
+
+    <span style="color: #99968b;">// </span><span style="color: #99968b;">&#44152;&#52432; &#51080;&#45716; &#44221;&#50864;</span>
+    <span style="color: #92a65e; font-weight: bold;">int</span> <span style="color: #cae682;">m</span> = (end-start)/2;
+    <span style="color: #8ac6f2; font-weight: bold;">return</span> query(st,qs,qe,start, m, 2*i+1) + query(st, qs, qe, m+1,end,2*i+2);
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline6" class="outline-3">
+<h3 id="orgheadline6">update</h3>
+<div class="outline-text-3" id="text-orgheadline6">
+<p>
 원 배열의 값이 바뀔때 트리를 업데이트 해주는 함수. 해당 배열이 포함된 모든 노드의 값을 수정해 준다. O(logN)
-#+BEGIN_SRC c++
-  void update(int*st, int dest, int orgValue, int newValue){
-      update2(st, dest, newValue-orgValue, 0, N-1, i);
-  }
+</p>
+<div class="org-src-container">
 
-  void update2(int*st, int dest, int diff, int s,int e, int i){
-      if (dest<s || dest>e) return;
+<pre class="src src-c++"><span style="color: #92a65e; font-weight: bold;">void</span> <span style="color: #cae682;">update</span>(<span style="color: #92a65e; font-weight: bold;">int</span>*<span style="color: #cae682;">st</span>, <span style="color: #92a65e; font-weight: bold;">int</span> <span style="color: #cae682;">dest</span>, <span style="color: #92a65e; font-weight: bold;">int</span> <span style="color: #cae682;">orgValue</span>, <span style="color: #92a65e; font-weight: bold;">int</span> <span style="color: #cae682;">newValue</span>){
+    update2(st, dest, newValue-orgValue, 0, N-1, i);
+}
 
-      st[i] += diff;
-      if (s==e){    
-          return;
-      }
-      int m = (e-s)/2;
-      update2(st, dest, diff, s, m, 2*i+1);
-      update2(st, dest, diff, m+1, e, 2*i+2);    
-  }
-#+END_SRC
+<span style="color: #92a65e; font-weight: bold;">void</span> <span style="color: #cae682;">update2</span>(<span style="color: #92a65e; font-weight: bold;">int</span>*<span style="color: #cae682;">st</span>, <span style="color: #92a65e; font-weight: bold;">int</span> <span style="color: #cae682;">dest</span>, <span style="color: #92a65e; font-weight: bold;">int</span> <span style="color: #cae682;">diff</span>, <span style="color: #92a65e; font-weight: bold;">int</span> <span style="color: #cae682;">s</span>,<span style="color: #92a65e; font-weight: bold;">int</span> <span style="color: #cae682;">e</span>, <span style="color: #92a65e; font-weight: bold;">int</span> <span style="color: #cae682;">i</span>){
+    <span style="color: #8ac6f2; font-weight: bold;">if</span> (dest&lt;s || dest&gt;e) <span style="color: #8ac6f2; font-weight: bold;">return</span>;
 
-* Problems
-- 기초
-  - [[https://algospot.com/judge/problem/read/MORDOR][algospot, MORDOR]]
-  - [[https://algospot.com/judge/problem/read/FAMILYTREE][algospot, FAMILYTREE]]
-- 응용
- - [[https://www.hackerrank.com/challenges/direct-connections][hackerrank, direct connections]]
-* revision history
-- 2015/11/16 initial draft
+    st[i] += diff;
+    <span style="color: #8ac6f2; font-weight: bold;">if</span> (s==e){    
+        <span style="color: #8ac6f2; font-weight: bold;">return</span>;
+    }
+    <span style="color: #92a65e; font-weight: bold;">int</span> <span style="color: #cae682;">m</span> = (e-s)/2;
+    update2(st, dest, diff, s, m, 2*i+1);
+    update2(st, dest, diff, m+1, e, 2*i+2);    
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline7" class="outline-2">
+<h2 id="orgheadline7">Problems</h2>
+<div class="outline-text-2" id="text-orgheadline7">
+<ul class="org-ul">
+<li>기초
+<ul class="org-ul">
+<li><a href="https://algospot.com/judge/problem/read/MORDOR">algospot, MORDOR</a></li>
+<li><a href="https://algospot.com/judge/problem/read/FAMILYTREE">algospot, FAMILYTREE</a></li>
+</ul></li>
+<li>응용
+<ul class="org-ul">
+<li><a href="https://www.hackerrank.com/challenges/direct-connections">hackerrank, direct connections</a></li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgheadline8" class="outline-2">
+<h2 id="orgheadline8">revision history</h2>
+<div class="outline-text-2" id="text-orgheadline8">
+<ul class="org-ul">
+<li>2015/11/16 initial draft</li>
+</ul>
+</div>
+</div>
