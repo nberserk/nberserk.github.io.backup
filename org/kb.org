@@ -52,6 +52,14 @@ https://avro.apache.org/docs/1.7.7/spec.html
 
 convert existing data into parquet :  http://blog.cloudera.com/blog/2014/05/how-to-convert-existing-data-into-parquet/
 
+1.4 parquet loading bug, https://issues.apache.org/jira/browse/SPARK-6566
+
+
+// load and check column existence
+val df = sqlContext.parquetFile("/test.parquet")
+df.schema.fieldNames.contains("uidd")
+
+
 * org
 - file link (org-insert-link)
 ** babel
