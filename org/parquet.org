@@ -33,7 +33,7 @@ columnar storage다. 이렇게 접근한 이유는 크게 2가지.
 #+END_HTML
 
 * 단점
-마냥 좋기만 한것은 아니다. 분석용으로 최고의 파일 형식이라고 한 것은 데이터의 업데이트가 없다는 뜻이다. 즉, 지속적으로 값이 바뀌거나 지워진다고 하면 parquet을 이용하는 것은 자살행위다. 그럴때는 HBase 같은것을 써야하겠다.
+마냥 좋기만 한것은 아니다. 분석용으로 최고의 파일 형식이라고 한 것은 데이터의 업데이트가 없다는 뜻이다. 즉, readonly일때 좋은 것이다. 
 
 * 환경 설정
 spark + parquet + avro 를 사용하려면 다음과 같은 디펜던시가 필요하다. 
@@ -126,7 +126,7 @@ spark + parquet + avro 를 사용하려면 다음과 같은 디펜던시가 필�
   writer.close();
 
   /*
-  // this code use
+  // write a record using generated POJO class called User
   ParquetWriter<User> writer = AvroParquetWriter.<User>builder(path)
   .withCompressionCodec(CompressionCodecName.SNAPPY)
   .withSchema(schema)
@@ -138,7 +138,7 @@ spark + parquet + avro 를 사용하려면 다음과 같은 디펜던시가 필�
   p.setWeight(70.0);
   writer.write(p);
   writer.close();
-  ,*/
+  */
   Configuration conf = new Configuration();
   AvroReadSupport.setAvroReadSchema(conf, Profile.SCHEMA$);
   ParquetReader<Profile> reader = AvroParquetReader.<Profile>builder(path)
@@ -152,13 +152,19 @@ spark + parquet + avro 를 사용하려면 다음과 같은 디펜던시가 필�
 
 
 #+END_SRC
-* parquet load 
-여러개의 parquet 파일을 로드할때에 스키마가 서로 다르면 교집합(공통으로 가지고 있는 컬럼)만 로드 된다. 
+* Spark에서 parquet 읽기
+spark 1.5.0 미만에서는 [[https://issues.apache.org/jira/browse/SPARK-6566][parquet로드시 익셉션을 내는 버그가 있었는데]] 그때는 스파크 버전을 1.5.0 이상으로 올리면 해결 된다.
 #+BEGIN_SRC scala
   val p = sqlContext.parquetFile("s3://test.parquet")
   val multipleParquet = sqlContext.parquetFile("s3://p1", "s3://p2")
 #+END_SRC
 
+* schema merge
+스키마가 다른 여러 parquet 파일을 로드할때는 스키마 머지가 필요한데, 스파크 1.5.0 부터는 디폴트로 옵션이 꺼져 있다. 그래서 교집합만 로드가 된다. 
+아래처럼 mergeSchema 옵션을 켜고 하면 합집합(?)으로 로드 된다. 
+#+BEGIN_SRC scala
+val p = sqlContext.read.option("mergeSchema", "true").parquetFile("s3://v1.parquet", "s3://v2.parquet")
+#+END_SRC
 
 * revision history
 - 2015/12/10 initial draft
