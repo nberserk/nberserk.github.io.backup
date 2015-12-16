@@ -1,0 +1,28 @@
+#+STARTUP: showall indent
+#+STARTUP: hidestars
+#+BEGIN_HTML
+---
+layout: post
+title: RDD, DataFrame으로 상호 변환
+tags: parquet
+date: 2015-12-09
+---
+#+END_HTML
+
+앞서 저장 용량과 분석 속도를 위해서 parquet을 [[2015/12/09/parquet][도입했다는 얘기]]를 했는데, parquet 으로 로드를 하면 DataFrame으로 로딩이 된다. 이것을 변환을 하려면 RDD로 변경을 하고, 다시 DataFrame으로 변경을 해야 한다. 이것에 관련된 것들을 알아보자.
+   
+* DataFrame <-> RDD
+
+#+BEGIN_SRC scala
+  // from dataframe to rdd
+  val df = xxx 
+  val rdd = df.rdd
+
+  // from rdd to dataframe
+  sqlContext.createDataFrame(rdd, )
+#+END_SRC
+
+
+
+* revision history
+- 2015/12/16 initial draft

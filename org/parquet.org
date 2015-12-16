@@ -106,6 +106,7 @@ spark + parquet + avro 를 사용하려면 다음과 같은 디펜던시가 필�
   }
 #+END_SRC
 * parquet save/read in java
+
 #+BEGIN_SRC java
   Schema schema = new Schema.Parser().parse(new File("src/test/avro/user.avro"));        
   File tmp = new File("test.parquet");
@@ -149,9 +150,8 @@ spark + parquet + avro 를 사용하려면 다음과 같은 디펜던시가 필�
   assertEquals("darren", p1.getUid().toString());
   assertEquals(22, p1.getAge());
   assertEquals(77.0, p1.getWeight());
-
-
 #+END_SRC
+
 * Spark에서 parquet 읽기
 spark 1.5.0 미만에서는 [[https://issues.apache.org/jira/browse/SPARK-6566][parquet로드시 익셉션을 내는 버그가 있었는데]] 그때는 스파크 버전을 1.5.0 이상으로 올리면 해결 된다.
 #+BEGIN_SRC scala
