@@ -1,0 +1,16 @@
+* why amazon
+when i was 24 years old, I've developed online game called 'GameEverland'. it was online game and 2D graphical game. my char can change clothes, shoes, hair colors chat with other persons, can make a clan. there was a moment seeing our game users are happy to plat with it. sending some cool suggestion to us. please make this feature. we love our games. so please talk to us before making some decision. it was very fun seeing the users are happy. my programming was not just a work. sometimes i made some improvement by myself to make them happy. 
+
+my point is making great product is good things. I want to see users are happy to use features i made. then i will be happy too.
+
+as u know, AWS is [[https://www.srgresearch.com/articles/big-four-cloud-providers-are-leaving-rest-market-behind][#1 cloud platform provider]], so i can reach customers more broadly. no other choices.
+
+* 4 basic oop principles
+encapsulation
+abstraction
+inheritance
+polymorphism(one name, many forms)
+
+http://codebetter.com/raymondlewallen/2005/07/19/4-major-principles-of-object-oriented-programming/
+
+
