@@ -233,6 +233,14 @@ default 값을 가진 필드는 디폴트 값이 채워지고, union들은 생�
 
 #+END_SRC
 
+* performance comparison
+원본 사이즈, txt로는 20G, parquet로는 6.5G 정도임 row수는 1억1천 row정도의 데이터.
+
+file size, 20G 파일이 parquet으로 저장하니 6.5G 정도로 작아짐. 50% 이상.
+query, 특정 값을 가진 사용자들의 수를 쿼리하는 것을 각각 측정해보니 txt의 경우는 186초. parquet의 경우는 105초 정도가 소요됨. 
+
+따라서, 스토리지 용량/ 쿼리 속도 면에서 모두 만족할 만한 결과를 보임. 
+
 * revision history
 - 2015/12/10 initial draft
 - 2015/12/18 add schema evolution
