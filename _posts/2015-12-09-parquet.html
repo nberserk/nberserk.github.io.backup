@@ -1,6 +1,6 @@
 ---
 layout: post
-title: parquet + avro + sparK
+title: Parquet + Avro + Spark
 tags: parquet
 date: 2015-12-09
 ---
@@ -209,7 +209,7 @@ val multipleParquet = sqlContext.parquetFile("s3://p1", "s3://p2")
 <h2 id="orgheadline7">schema merge</h2>
 <div class="outline-text-2" id="text-orgheadline7">
 <p>
-스키마가 다른 여러 parquet 파일을 로드할때는 스키마 머지가 필요한데, 스파크 1.5.0 부터는 디폴트로 옵션이 꺼져 있다. 그래서 교집합만 로드가 된다. 
+스키마가 다른 여러 parquet 파일을 로드할때는 스키마 머지가 필요한데, 스파크 1.5.0 부터는 디폴트로 옵션이 꺼져 있다. 그래서 교집합?만 로드가 된다. 
 아래처럼 mergeSchema 옵션을 켜고 하면 합집합(?)으로 로드 된다. 
 </p>
 <div class="org-src-container">
@@ -221,10 +221,89 @@ val multipleParquet = sqlContext.parquetFile("s3://p1", "s3://p2")
 </div>
 
 <div id="outline-container-orgheadline8" class="outline-2">
-<h2 id="orgheadline8">revision history</h2>
+<h2 id="orgheadline8">avro schema evolution</h2>
 <div class="outline-text-2" id="text-orgheadline8">
+<p>
+avro를 사용하면 좋은 점은 스키마 변화가 있을때 유연하게 대처할 수 있는 점인데, 아래의 경우를 생각해보자. 
+</p>
+
+<p>
+Profile은 name필드만 있었는데, v2에서 "create<sub>time</sub>", "newStringNullDefault", "union" 등이 추가 되었다. create<sub>time</sub>, newStringNullDefault은 default값이 있고, union(둘중 하나)은 union으로 선언되어졌다. 이때 Profile 스키마로 저장된 parquet파일을 Profile2로 읽으면 어떻게 될까?
+</p>
+
+<p>
+default 값을 가진 필드는 디폴트 값이 채워지고, union들은 생략된다. 아래 예제 참고.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-java">/*
+
+// Profile avro spec
+{"namespace": "com.nberserk.avro",
+ "type": "record",
+ "name": "Profile",
+ "fields": [
+     {"name": "name", "type": "string"}
+ ]
+}
+
+// Profile2 avro spec
+{"namespace": "com.nberserk.avro",
+ "type": "record",
+ "name": "Profile2",
+ "fields": [
+     {"name": "name", "type": "string"}
+     {"name": "create_time", "type":"long", "default":0},
+     {"name": "union", "type": ["null", "string"]},
+     {"name": "value_default", "type": "string", "default": "null"}
+ ]
+}
+*/   
+Schema schema = new Schema.Parser().parse(new File("src/test/avro/profile.avro"));
+
+File tmp = new File("test2.tmp");
+tmp.deleteOnExit();
+tmp.delete();
+
+Path file = new Path(tmp.getPath());
+ParquetWriter&lt;GenericRecord&gt; writer = AvroParquetWriter
+    .&lt;GenericRecord&gt;builder(file)
+    .withSchema(schema)
+    .build();
+
+// Write a record with a null value
+GenericRecord r = new GenericData.Record(schema);
+for (int i = 0; i &lt; 100; i++) {
+    r.put("name", "darren");
+    writer.write(r);
+}
+writer.close();
+
+
+// Let's load the same file with v2 schema
+Schema v2 = new Schema.Parser().parse(new File("src/test/avro/profile2.avro"));
+Configuration conf = new Configuration();
+AvroReadSupport.setAvroReadSchema(conf, v2);
+
+ParquetReader&lt;GenericRecord&gt; reader = AvroParquetReader.&lt;GenericRecord&gt;builder(file)
+    .withConf(conf).build();
+GenericRecord gr = reader.read();
+
+assertEquals("darren", gr.get("name").toString());
+assertEquals(0L, gr.get("create_time"));
+assertEquals("null", gr.get("newStringNullDefault").toString());
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline9" class="outline-2">
+<h2 id="orgheadline9">revision history</h2>
+<div class="outline-text-2" id="text-orgheadline9">
 <ul class="org-ul">
 <li>2015/12/10 initial draft</li>
+<li>2015/12/18 add schema evolution</li>
 </ul>
 </div>
 </div>
