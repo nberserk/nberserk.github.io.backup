@@ -3,7 +3,7 @@
 #+BEGIN_HTML
 ---
 layout: post
-title: HDFS merge in spark
+title: merge sequence file in spark
 tags: hdfs
 date: 2016-1-8
 ---
@@ -29,5 +29,5 @@ def merge(srcPath: String, dstPath: String): Unit =  {
 #+END_SRC
 
 * revision history
-- 2016/1/8 initial draft
+- 2016/1/11 initial draft
 
