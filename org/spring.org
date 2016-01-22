@@ -1,0 +1,56 @@
+#+STARTUP: showall indent
+#+STARTUP: hidestars
+#+BEGIN_HTML
+---
+layout: post
+title: Spring 
+tags: spring
+date: 2016-01-19
+---
+#+END_HTML
+
+Spring하면 DI(dependency Injection), AOP(Aspect oriented programming), bean 정도가 핵심 개념일듯 하다.
+우선 DI개념.
+도서관을 구현한다고 가정해보자. 그럼 BookManager(모든 북을 가지고 있는), UserManager(모든 사용자의 정보를 가지고 있는), User, Book 등이 있을 것으로 생각할 수 있다. BookManager.lend는 아래처럼 생겼을 것이다. BookManager와 UserManager는 필연적으로 디펜던시를 가지게 된다. 
+#+BEGIN_SRC java
+  class BookManager{
+      UserManager userManager;
+
+      BookManager(UserManager mgr){
+          this.userManager = mgr;
+      }
+
+      public boolean lend(String isbn, String id){
+          Book book = getBook(isbn);
+          String user = UserManager.getInstance().getUser(id);
+
+          // main logic here
+      }
+  }
+
+#+END_SRC
+
+DI의 코드는 이런식이다. 즉, 생성자나 setter를 통해서 configure해주지 않는 대신 configuration.xml등을 통해서 설정이 되는 그럼 개념이다. 
+#+BEGIN_SRC java
+    class BookManager{
+        @Autowired
+        UserManager userManager;
+      
+        public boolean lend(String isbn, String id){
+            Book book = getBook(isbn);
+            String user = userManager.getUser(id);
+
+            // main logic here
+        }
+    }
+#+END_SRC
+
+이것의 장점은 뭘까. 우선 클래스들간의 디펜던시가 줄어든다. 그래서 테스트 케이스를 작성하기가 용이해진다. A클래스를 테스트하기 위해서 관련없는 B, C, D클래스를 만들어줘야 하기 때문에 boilerplate가 많아지기 마련인데 이럴때 DI는 큰 장점이 될 수 있다. 
+
+* oops
+
+
+
+* revision history
+- 2015/12/10 initial draft
+- 2015/12/18 add schema evolution
