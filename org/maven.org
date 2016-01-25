@@ -1,0 +1,17 @@
+#+STARTUP: showall indent
+#+STARTUP: hidestars
+#+BEGIN_HTML
+---
+layout: post
+title: maven
+tags: maven
+date: 2016-01-25
+---
+#+END_HTML
+
+* create project
+`mvn archetype:generate -DgroupId=com.nberserk.xx -DartifactId=myExample -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false`
+
+
+* revision history
+- 2015/12/10 initial draft
