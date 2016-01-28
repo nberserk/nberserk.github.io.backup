@@ -241,6 +241,16 @@ query, 특정 값을 가진 사용자들의 수를 쿼리하는 것을 각각 �
 
 따라서, 스토리지 용량/ 쿼리 속도 면에서 모두 만족할 만한 결과를 보임. 
 
+* trouble shooting
+** writing parquet files to s3 is too slow
+csv에서 parquet파일로 바꾸고 난후에 S3에 write 할때 시간이 너무 오래 걸려서 분석해보니 write.parquet()의 시간이 너무 오래 걸렸다. 검색을 해보니 [[http://spark.apache.org/docs/latest/sql-programming-guide.html#configuration][spark.sql.parquet.output.committer.class 을 org.apache.spark.sql.parquet.DirectParquetOutputCommitter 로 설정]]하면 괜찮아진다는 얘기가 있다. 진짜 수정해주니 2-3배는 빨라진것 같다. 
+
+#+BEGIN_SRC java
+//sc : SparkContext
+sc.hadoopConfiguration.set("spark.sql.parquet.output.committer.class", "org.apache.spark.sql.parquet.DirectParquetOutputCommitter")
+#+END_SRC
+
 * revision history
 - 2015/12/10 initial draft
 - 2015/12/18 add schema evolution
+- trouble shooting/s3 slow added
