@@ -7,7 +7,5 @@ twitter_username: darrenha
 github_username:  nberserk
 
 # Build settings
-markdown: redcarpet
-redcarpet:
-  extensions: ["strikethrough"]
+
 
