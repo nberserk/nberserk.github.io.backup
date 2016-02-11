@@ -1,0 +1,19 @@
+#+STARTUP: showall indent
+#+STARTUP: hidestars
+#+BEGIN_HTML
+---
+layout: post
+title: docker
+tags: docker
+date: 2016-02-11
+---
+#+END_HTML
+
+* docker 설정
+- no_proxy="localhost,127.0.0.1,192.168.99.100". when you are in company proxy environment
+- 
+
+
+
+* revision history
+- 2016/2/11 initial draft
