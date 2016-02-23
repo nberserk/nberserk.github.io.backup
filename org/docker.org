@@ -3,15 +3,66 @@
 #+BEGIN_HTML
 ---
 layout: post
-title: docker
+title: docker로 django 개발 환경 만들기
 tags: docker
 date: 2016-02-11
 ---
 #+END_HTML
 
-* docker 설정
+
+
+
+* boot2docker
+mac이나 윈도우즈에서 사용할 리눅스이미지. ubuntu등과는 달
+
+* docker-machine 
+create proxy enabled machine:
+docker-machine create -d virtualbox --engine-env HTTPS_PROXY=http://168.219.61.252:8080 --engine-env HTTP_PROXY=http://168.219.61.252:8080 default
+
+applying
+eval $(docker-machine env <machine-name>)
+
+* docker proxy
 - no_proxy="localhost,127.0.0.1,192.168.99.100". when you are in company proxy environment
+- proxy
+  - docker-machine ssh default
+  - sudo vi /var/lib/boot2docker/profile
+  - export http_proxy="http://<ip:port>/"
+  - export https_proxy="http://<ip:port>/"
+* docker build
+make build
+make BINDDIR=. cross
+then checkout bundles folder
+
+https://github.com/umiddelb/armhf/wiki/Installing,-running,-using-docker-on-armhf-(ARMv7)-devices#updating-from-docker-version-101
+
+
+* docker build
+docker  run --privileged -i  -t docker-dev:master /bin/bash
+
+** on s3
+env:
+- apt-get install gcc make 
+- export PATH=$PATH:/usr/local/go/bin
 - 
+
+* docker engine
+# make image form Dockerfile
+docker build -t django . 
+
+# run django server
+docker run -v /Users/darren/projects/clab/web:/code -p 8000:8000 django python manage.py runserver 0.0.0.0:8000
+* docker-compose
+
+* images vs container
+To use a programming metaphor, if an image is a class, then a container is an instance of a class
+
+
+* references
+- [[https://flanagan.withknown.com/2015/docker-for-cross-compilation][using docker to make arm cross compile]]
+- 
+
+* 
 
 
 
