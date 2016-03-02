@@ -17,7 +17,7 @@ docker repository [mysql로 검색](https://hub.docker.com/_/mysql/)을 해보�
 
 Dockerfile은 아래처럼.
 
-```
+```txt
 FROM python:2.7
 ENV PYTHONUNBUFFERED 1
 RUN mkdir /code
@@ -26,7 +26,9 @@ ADD requirements.txt /code/
 RUN pip install -r requirements.txt
 ADD . /code/
 ```
+
 requirements.txt는 아래처럼 작성한다.
+
 ```txt
 Django
 psycopg2
@@ -44,9 +46,9 @@ MySQL-python
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': '<db_name>',
-        'USER': '<db_user>',
-        'PASSWORD': '<db_password>',
+        'NAME': 'django',
+        'USER': 'django',
+        'PASSWORD': 'django',
         'HOST': 'db',
         'PORT': 3306,
     }
@@ -79,8 +81,9 @@ web:
         - db
 ```
 
-`docker-compose up` 명령을 내리면 두개의 docker 컨테이너를 동시에 실행할 수 있다. 
+`docker-compose up` 명령을 내리면 두개의 docker 컨테이너를 동시에 실행할 수 있다.
 
+잘 동작하는지 확인하려면 http://localhost:8000 포트로 접속해보면 된다. 맥이나 윈도우즈의 경우는 `docker-machine ip` 명령으로 나오는 ip의 8000 로트로 접속해보면 장고 초기화면이 나온다. 나의 경우는 http://192.168.99.100:8000/ 이었다. 
 
 
 ### revision history
