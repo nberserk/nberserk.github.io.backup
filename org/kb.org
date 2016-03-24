@@ -25,6 +25,7 @@
 ** nohup
 DO NOT terminate background job, when i log off.
 #+BEGIN_SRC bash
+nohup ./script.sh < inputFile.txt > ./logFile 2>&1 &
 nohup /path/to/command-name arg1 arg2 &
 #+END_SRC
 
@@ -89,3 +90,16 @@ on El-Capitan
 gem install --user-install --bindir ~/bin --no-document --pre --verbose jekyll
 
 https://github.com/jekyll/jekyll/issues/3984
+
+* git
+- copy specific branch or tag to new git 
+old는 docker official git 이고, new는 비어있는 로컬 git.
+#+BEGIN_SRC bash
+git clone ssh://darren.ha@10.240.xx.xx:29418/docker
+cd docker
+git remote add github https://github.com/docker/docker.git
+git fetch github
+bit merge v1.10.2
+git push origin master
+#+END_SRC
+
