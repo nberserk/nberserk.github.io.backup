@@ -7,4 +7,5 @@ twitter_username: darrenha
 github_username:  nberserk
 
 # Build settings
-
+markdown: rdiscount
+highlighter: pygments
