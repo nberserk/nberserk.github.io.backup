@@ -1,4 +1,10 @@
 * bash
+** strict mode
+#+BEGIN_SRC bash
+#!/bin/bash
+set -euo pipefail
+#+END_SRC
+
 ** if
 #+BEGIN_SRC sh
   # checking first arg specified or not
