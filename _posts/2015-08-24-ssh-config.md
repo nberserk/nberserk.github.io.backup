@@ -6,9 +6,12 @@ tags: ssh
 
 aws를 사용하다보면 ssh 작업을 많이 하게 되는데, 이 때 알아두면 너무 너무 편리한 팁들이다.
 
-## 패스워드 없이 ssh
+## passwordless ssh
 나의 public key(.ssh/id_rsa.pub)를 대상 컴의 .ssh/authrized_keys 에 복사해주면
 ` ssh user@server ls / `를 패스워드 없이 바로 실행할 수 있다.
+
+> cat ~/.ssh/id_rsa.pub | ssh stg 'cat >> .ssh/authorized_keys'
+
 
 만약 .ssh 폴더가 없다면, `ssh-keygen -t rsa`로 생성해 주면 된다.
 
