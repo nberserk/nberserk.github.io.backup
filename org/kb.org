@@ -35,6 +35,15 @@ nohup ./script.sh < inputFile.txt > ./logFile 2>&1 &
 nohup /path/to/command-name arg1 arg2 &
 #+END_SRC
 
+** sed
+text replace tool. when used correctly, it's awesome!
+#+BEGIN_SRC bash
+echo 'day break' | sed 's/day/night/' # night break
+sed -i 's/day/night/' org_file # substitute and save to file
+sed -i 's:day:night/' org_file # just same with above. used different delimeter
+sed -i '/^PATTERN/ s:.*:entire row changed' org_file # perform replace for PATTERN matching lines
+#+END_SRC
+
 * aws
 ** emr
 - doesn't run when no default VPC is absent. https://aws.amazon.com/premiumsupport/knowledge-center/deleted-default-vpc/
