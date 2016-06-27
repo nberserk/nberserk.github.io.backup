@@ -42,6 +42,23 @@ echo 'day break' | sed 's/day/night/' # night break
 sed -i 's/day/night/' org_file # substitute and save to file
 sed -i 's:day:night/' org_file # just same with above. used different delimeter
 sed -i '/^PATTERN/ s:.*:entire row changed' org_file # perform replace for PATTERN matching lines
+sed -i "s/day/$MASTER/" org_file # replace with env var $MASTER
+#+END_SRC
+
+** split comma separated string
+
+#+BEGIN_SRC bash
+IFS=',' read -r -a array <<< "a,b,c"
+for i in "${array[@]}"
+do
+    echo "$i"
+done
+#+END_SRC
+
+** find script directory
+
+#+BEGIN_SRC bash
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 #+END_SRC
 
 * aws
