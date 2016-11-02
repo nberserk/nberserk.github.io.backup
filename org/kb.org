@@ -7,26 +7,37 @@ set -euo pipefail
 
 ** if
 #+BEGIN_SRC sh
-  # checking first arg specified or not
-  if [ -z "$1" ]; then    
-      folder=sparkjob
-  else
-      folder=$1
-  fi
+    # checking first arg specified or not
+    if [ -z "$1" ]; then    
+        folder=sparkjob
+    else
+        folder=$1
+    fi
 
-  s1='a'
-  s2='b'
-  if [ "$s1" = "$s2" ];  then
-      echo "equal"
-  else
-      echo 'not equal'
-  fi
+    #string compare
+    s1='a'
+    s2='b'
+    if [ "$s1" = "$s2" ];  then
+        echo "equal"
+    else
+        echo 'not equal'
+    fi
 
-  #string compare
+    # integer compare
+    s1=1
+    s2=1
+    if [ "$s1" -eq "$s2" ];  then
+        echo "equal"
+    else
+        echo 'not equal'
+    fi
+
+
 #+END_SRC
 
 #+RESULTS:
-: not equal
+| not   | equal |
+| equal |       |
 
 ** nohup
 DO NOT terminate background job, when i log off.
@@ -60,6 +71,24 @@ done
 #+BEGIN_SRC bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 #+END_SRC
+
+** find
+#+BEGIN_SRC bash
+# ll under 1K files
+find . -size -1k | xargs ls -l
+#delete files samller than 1K
+find . -size -1k -delete
+
+#+END_SRC
+** scp 
+#+BEGIN_SRC bash
+scp -r conf s1:/usr/local/spark-1.3.0-bin-hadoop2.4/ # recursively copy directory to another machine
+#+END_SRC
+
+* python
+
+print("category=%s, url=%s, fn=%s" % (category, url, fn))
+** getopt
 
 * aws
 ** emr
