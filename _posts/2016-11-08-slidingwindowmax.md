@@ -53,9 +53,10 @@ intuition:
 
 
 ## Problems
-
+이해가 되었다면 아래 문제들을 풀어보자.
 - [Sliding Window Maximum](https://leetcode.com/problems/sliding-window-maximum/)
 
 ## Reference
 
 - [explanation](https://abitofcs.blogspot.kr/2014/11/data-structure-sliding-window-minimum.html)
+- [My implemetation & test cases](https://github.com/nberserk/codejam/blob/4cd0ba731762f9f65151bc656a53474f4d519501/java/src/main/java/crackcode/queue/SlidingWindowMaximum.java)
