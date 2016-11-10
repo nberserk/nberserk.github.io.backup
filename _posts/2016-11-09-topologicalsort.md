@@ -38,11 +38,13 @@ cycle의 경우, directed graph는 visited의 state(1:open, 2:close)까지 봐�
 
 알고리즘 이해가 되었다면 아래 문제들 풀어보시길.
 
+- [course schedule](https://leetcode.com/problems/course-schedule/) : 기본.
 - [alien dictionary @leetcode](https://leetcode.com/problems/alien-dictionary/) : 코너 케이스가 많으니 정신 바짝 차리고.
 - [sequence reconstruction @leetcode](https://leetcode.com/problems/sequence-reconstruction/) : 응용
 
 
 ## Reference
+
 - [explanation @geeks](http://www.geeksforgeeks.org/topological-sorting/)
 
 
