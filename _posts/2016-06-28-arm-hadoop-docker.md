@@ -14,8 +14,9 @@ docker hub의 armv7/armhf-ubuntu_core:15.10  이미지를 기반으로 Dockerize
 - hadoop-master
 
 
-## hadoop-base image
 
+
+## hadoop-base image
 
 
 hadoop-base 에서는 slave와 master에서 공통적으로 사용할 것들을 설정
@@ -26,6 +27,7 @@ hadoop-base 에서는 slave와 master에서 공통적으로 사용할 것들을 
 
 
 #### qemu-arm-static
+
 qemu를 사용해서 x86 머신에서 docker를 빌드/테스트 하는 이유는 아래 2가지 이유 때문.
 
 1. arm device가 잘 없다는 것. raspberry pi 정도?
@@ -62,54 +64,12 @@ RUN echo "Port 2122" >> /etc/ssh/sshd_config
 
 ```
 
-
-## Controller
-
-urls.py를 request url을 regex로 각 뷰로 dispatch한다.
-
-```python
-urlpatterns = [
-    url(r'^$', views.IndexView.as_view(), name='index'),
-    url(r'^(?P<pk>[0-9]+)/$', views.DetailView.as_view(), name='detail'),
-    url(r'^(?P<pk>[0-9]+)/results/$', views.ResultsView.as_view(), name='results'),
-    url(r'^(?P<question_id>[0-9]+)/vote/$', views.vote, name='vote'),
-    ]
-```
-
-## View(Template)
-
-우리가 서버로 사용하는 것은 Django이고 실제로 웹사이트의 사용자가 보게 되는 것은 html이다. 그러면 django object를 html로 변환하는 과정이 필요하게 마련인데, 이것을 해주는 것이 template 되겠다.
-
-object는 handle bar형식으로 표현이 되고, 그 외의 것은 `{% raw %} {% tag %} {% endraw %}`로 표현이 된다. 아래의 예제에서 extends, block, for, endfor, endblock 등이 되겠다.
-
-신선했던 것은 template도 상속관계를 가질수 있다는 것. 그래서 전체적인 구조(block)는 base.html에서 잡아두고, override 하고 싶은 부분만 extends해서 커스터마이징 할 수 있다. 실제로도 아주 편한 피쳐임.
-
-```html
-{% raw %}
-{% extends "base_generic.html" %}
-
-{% block title %}{{ section.title }}{% endblock %}
-
-{% block content %}
-<h1>{{ section.title }}</h1>
-
-{% for story in story_list %}
-<h2>
-  <a href="{{ story.get_absolute_url }}">
-    {{ story.headline|upper }}
-  </a>
-</h2>
-<p>{{ story.tease|truncatewords:"100" }}</p>
-{% endfor %}
-{% endblock %}
-{% endraw %}
-
-```
+## reference
+-  [hadoop multinode](https://github.com/alvinhenrick/hadoop-mutinode) : serf를 이용해서 host name resolution을 하는듯. 설정을 하려면 slave의 host name 혹은 ip를 알아야 하는데 이것 설정도 꽤 귀찮은 일. serf!
 
 
 ## revision history
-* 2016-4-15 draft
-* 2016-5-10 controller, view 업데이트
+* 2016-6-28 draft
 
 
 
