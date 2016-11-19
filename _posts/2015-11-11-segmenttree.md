@@ -8,13 +8,20 @@ published: true
 
 트리. 트리는 알고리즘 계에서 혁신적인 발견의 하나인데, O(N)으로 걸릴 만한 것을 O(logN)으로 바꿔주는 마법 같은 data structure이다. 트리는 여러가지 쓰임새가 있지만 이중에서도 segment tree에 대해서 알아보자.
 
-비슷한 용도로 쓰이는 Binary Indexed Tree가 있는데, 구현이 segment tree보다 간단하기 때문에 더 많이 쓰인다. 따라서, segment tree는 비추!. 나중에 업데이트 할 계획
+비슷한 용도로 쓰이는 [Binary Indexed Tree]({% post_url 2016-11-19-binaryindexedtree%})가 있는데, 구현이 segment tree보다 간단하기 때문에 더 많이 쓰인다. 따라서, segment tree는 비추!. 나중에 업데이트 할 계획
 
 ## When
 
 N개의 배열에서 특정 range(start, end)의 구간합을 구한다고 생각해보자. naive로 하면 O(N)이 걸린다.
 각 배열의 값이 변하지 않는다고 가정하면 O(1)으로 값을 구할 수 있다. psum[N]을 선언하고 0~n까지의 합을 미리 계산하여 캐쉬하고 있으면 psum[end] - psum[start]로 구간합을 바로 구할 수 있다.
-만약 각 배열의 값이 변한다면 가장 효율적인 방법은 무엇일까.. 이때 segement tree를 이용할 수 있다. tree에서의 insert는 O(logN)이므로 segment tree를 생성할때는 O(NlogN)이 걸리고 query는 O(longN), update는 O(logN)이 걸린다.
+만약 각 배열의 값이 변한다면 가장 효율적인 방법은 무엇일까.. 이때 segement tree를 이용하면 된다.
+
+
+|     |time complexity|
+|:---:|:-------------:|
+|construction| [O(NlogN)](https://en.wikipedia.org/wiki/Segment_tree)|
+| query | O(logN) |
+| update | O(logN)|
 
 
 ## idea
