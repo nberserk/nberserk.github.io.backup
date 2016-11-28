@@ -29,6 +29,86 @@ sorted array에서 타겟값을 찾는것. 반으로 나누어서 탐색공간�
 	}
 ```
 
+## search range of target value (with duplicates)
+
+`1, 2, 3, 3, 3, 6, 7, 9, 10` 처럼 중복된 수가 있을때 특정 값의 개수를 알려면 어떻게 해야 할까? basic처럼 해서 왼쪽, 오른쪽으로 이동하면서 범위를 찾을 수 있지만 이렇게 하면 time complexity가 O(N)이 된다.(중복된 수가 많다고 가정해 보라.) 이럴때는 바이너리서치를 2번해서 한번은 시작점을 찾고 또한번은 끝점을 찾으면 해당 값의 range를 알 수 있다.
+
+요점은 start점을 찾을때는 타겟값을 만나면 hi를 m으로 변경하고, end점을 찾을때는 lo를 m으로 변경한다는 사실.
+
+
+```java
+    int binarySearchStart(int[] a, int key) {
+		int lo = 0;
+		int hi = a.length - 1;
+
+		while (lo < hi) {
+			int m = lo + (hi-lo) / 2;
+			if (a[m] > key) {
+				hi = m - 1;
+			} else if (a[m] < key) {
+				lo = m + 1;
+			} else {
+				hi = m;
+			}
+		}
+
+		if (a[lo] == key) // what if key doesn't exist
+			return lo;
+
+		return -1;
+	    }
+
+    int binarySearchEnd(int[] a, int key) {
+		int lo = 0;
+		int hi = a.length - 1;
+
+		while (lo < hi) {
+			int m = (lo + hi + 1) / 2;
+			if (a[m] > key) {
+				hi = m - 1;
+			} else if (a[m] < key) {
+				lo = m + 1;
+			} else {
+				lo = m;
+			}
+		}
+
+		if (a[lo] == key)
+			return lo;
+
+		return -1;
+
+	}
+```
+
+## in a rotated array
+
+`{5,6,7,8,1,2,3}` 처럼 한번 rotated된 배열에서 특정 숫자를 찾는다고 생각해보자. 이때에도 바이너리 서치를 사용할 수 있을까? 답은 예스. 반으로 잘랐을때 왼쪽과 오른쪽 하나는 ascending이므로 이 것을 이용해서 target이 왼쪽에 있는지 오른쪽에 있는지 판단할 수 있다!
+
+```java
+    static int bsearchRotatedSimpler(int[] a, int key){
+        int lo = 0;
+        int hi = a.length-1;
+        while(lo<=hi){
+            int m = (lo+hi)/2;    
+            if(key==a[m]) return m;
+
+            if(a[lo]<=a[m]){
+                if(a[lo] <= key && key <= a[m])
+                    hi=m-1;
+                else lo=m+1;
+            }else{
+                if(a[m] <=key && key <=a[hi])
+                    lo=m+1;
+                else hi=m-1;
+            }
+        }
+
+        return -1;
+    }
+```
+
+
 ## biggest satisfying condition
 
 약간 말을 바꾸어서 sorted array에서 target 보다 작은 수중 가장 큰 값을 찾으려면 어떻게 해야할까. `a[mid]<target`이면 `lo=mid+1` 대신에 `lo=mid`를 한다. 그 이유는 a[mid]가 largest일 수 있기 때문. 나머지 경우는 같다.
@@ -60,7 +140,7 @@ sorted array에서 타겟값을 찾는것. 반으로 나누어서 탐색공간�
 
 ## smallest satisfying condition
 
-## with duplicates
+
 
 
 
@@ -73,3 +153,8 @@ sorted array에서 타겟값을 찾는것. 반으로 나누어서 탐색공간�
 ## reference
 
 - [tutorial @topcoder](https://www.topcoder.com/community/data-science/data-science-tutorials/binary-search/)
+- [my implementation & test cases](https://github.com/nberserk/codejam/blob/master/java/src/main/java/crackcode/binarysearch/BinarySearch.java)
+
+## history
+
+- 11/28/2016 , binarySearchRotatedArray/searchRange added
