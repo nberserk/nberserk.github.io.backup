@@ -143,10 +143,11 @@ sorted array에서 타겟값을 찾는것. 반으로 나누어서 탐색공간�
 
 
 
-
 ## problems
 
 - [two sum II @leetcode](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/)
+- [Search in rotated sorted array @leetcode](https://leetcode.com/problems/search-in-rotated-sorted-array/)
+- [Search in rotated sorted array II @leetcode](https://leetcode.com/problems/search-in-rotated-sorted-array-ii/) : tricky,
 - [median of two sorted array @leetcode]( https://leetcode.com/problems/median-of-two-sorted-arrays/) : [explanation](https://discuss.leetcode.com/topic/4996/share-my-o-log-min-m-n-solution-with-explanation)
 
 
