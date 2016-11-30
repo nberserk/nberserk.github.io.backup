@@ -150,13 +150,14 @@ sorted array에서 타겟값을 찾는것. 반으로 나누어서 탐색공간�
 - [Search in rotated sorted array II @leetcode](https://leetcode.com/problems/search-in-rotated-sorted-array-ii/) : tricky,
 - [find minimum in rotated sorted array @leetcode](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/)
 - [find minimum in rotated sorted array II @leetcode](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array-ii/)
+- [find peak element @leetcode](https://leetcode.com/problems/find-peak-element/)
 - [median of two sorted array @leetcode]( https://leetcode.com/problems/median-of-two-sorted-arrays/) : [explanation](https://discuss.leetcode.com/topic/4996/share-my-o-log-min-m-n-solution-with-explanation)
 
 
 ## reference
 
 - [tutorial @topcoder](https://www.topcoder.com/community/data-science/data-science-tutorials/binary-search/)
-- [my implementation & test cases](https://github.com/nberserk/codejam/blob/master/java/src/main/java/crackcode/binarysearch/BinarySearch.java)
+- [my implementation & test cases](https://github.com/nberserk/codejam/blob/master/java/src/main/java/crackcode/binarysearch/BinarySearch.javan)
 
 ## history
 
