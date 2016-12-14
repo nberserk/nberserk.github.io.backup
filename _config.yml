@@ -6,6 +6,8 @@ url: "http://nberserk.github.io/" # the base hostname & protocol for your site
 twitter_username: darrenha
 github_username:  nberserk
 
+tag_page: '/tags/'
+
 # Build settings
 markdown: kramdown
 
