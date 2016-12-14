@@ -5,12 +5,13 @@
 
   <body>
 
+    {% include header.html %}
     <div class="container">
-        {% include header.html %}
+
         <div class="page-content">
-            <div class="wrapper">
+            <!--<div class="wrapper">-->
                 {{ content }}
-            </div>
+            <!--</div>-->
         </div>
 
         {% include footer.html %}
@@ -27,6 +28,8 @@
       ga('send', 'pageview');
 
     </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
   </body>
 
 </html>
