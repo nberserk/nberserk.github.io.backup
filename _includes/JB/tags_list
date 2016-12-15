@@ -27,10 +27,10 @@ Usage:
     {% endfor %}
   {% else %}
     {% for tag in tags_list %} 
-    	<li class="col-sm-2 post-tag-row">
+    	<div class="col-sm-2 post-tag-row">
     	    <a class="post-tag" href="{{ BASE_PATH }}{{ site.JB.tags_path }}#{{ tag[0] }}-ref">{{ tag[0] }} </a>
     	    <span class="item-multiplier"><span class="item-multiplier-x">×</span>&nbsp;<span class="item-multiplier-count"> {{ tag[1].size }}</span></span>
-    	</li>
+    	</div>
     {% endfor %}
   {% endif %}
 {% endif %}

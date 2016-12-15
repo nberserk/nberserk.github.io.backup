@@ -6,11 +6,9 @@ group: navigation
 ---
 {% include JB/setup %}
 
-<div class="container">
-    <ul class="list-inline">
-        {% assign tags_list = site.tags %}
-        {% include JB/tags_list %}
-    </ul>
+<div class="container spacer-updown">
+    {% assign tags_list = site.tags %}
+    {% include JB/tags_list %}
 </div>
 
 
