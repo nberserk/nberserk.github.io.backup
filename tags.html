@@ -6,10 +6,12 @@ group: navigation
 ---
 {% include JB/setup %}
 
-<ul class="list-inline">
-    {% assign tags_list = site.tags %}
-    {% include JB/tags_list %}
-</ul>
+<div class="container">
+    <ul class="list-inline">
+        {% assign tags_list = site.tags %}
+        {% include JB/tags_list %}
+    </ul>
+</div>
 
 
 {% for tag in site.tags %}

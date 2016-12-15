@@ -140,21 +140,33 @@
     color: #39739d;
     background-color: #E1ECF4;
     border-color: transparent;
-}
-
-.post-tag{
     text-align: center;
-    margin: 2px 2px 2px 0;
+    margin: 5px 2px 10px 0;
     padding: .4em .5em;
     transition: all .15s ease-in-out;
-    //font-size: 12px;
+
+    &:hover{
+        color: #33658a;
+        background-color: #cee0ed;
+        border-color: rgba(0,0,0,0);
+    }
+
+    &-row{
+        padding-bottom: 15px;
+    }
 }
 
-.post-tag:hover {
-    color: #33658a;
-    background-color: #cee0ed;
-    border-color: rgba(0,0,0,0);
+.item-multiplier {
+    margin-right: 4px;
+    color: #848d95;
+
+    &-count {
+        font-size: 11px;
+        color: #6a737c;
+    }
 }
+
+
 
 .post-title {
     font-size: 42px;
