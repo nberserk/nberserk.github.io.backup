@@ -42,6 +42,12 @@ $on-laptop:        800px;
     }
 }
 
+.container {
+  margin-right: auto;
+  margin-left: auto;
+  max-width: 720px; /* or 950px */
+}
+
 
 
 // Import partials from `sass_dir` (defaults to `_sass`)
