@@ -20,3 +20,11 @@ gems:
 
 sass:
     style: :compressed
+
+defaults:
+    -
+        scope:
+            path: ""
+            type: "posts"
+        values:
+            category: "default"
