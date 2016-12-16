@@ -27,9 +27,9 @@ Usage:
     {% endfor %}
   {% else %}
     {% for tag in tags_list %} 
-    	<div class="col-sm-2 post-tag-row">
+    	<div class="col-sm-3 post-tag-row">
     	    <a class="post-tag" href="{{ BASE_PATH }}{{ site.JB.tags_path }}#{{ tag[0] }}-ref">{{ tag[0] }} </a>
-    	    <span class="item-multiplier"><span class="item-multiplier-x">×</span>&nbsp;<span class="item-multiplier-count"> {{ tag[1].size }}</span></span>
+    	    <span class="item-multiplier"><span class="item-multiplier-x">&nbsp;×</span>&nbsp;<span class="item-multiplier-count"> {{ tag[1].size }}</span></span>
     	</div>
     {% endfor %}
   {% endif %}
