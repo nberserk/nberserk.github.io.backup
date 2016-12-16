@@ -20,6 +20,7 @@ docker hub의 armv7/armhf-ubuntu_core:15.10  이미지를 기반으로 Dockerize
 
 
 hadoop-base 에서는 slave와 master에서 공통적으로 사용할 것들을 설정
+
 * install java, openssh server
 * qemu-arm-static. 이것은 아래에서 설명
 * passwordless ssh
@@ -65,11 +66,15 @@ RUN echo "Port 2122" >> /etc/ssh/sshd_config
 ```
 
 ## reference
+
+- [my hadoop arm multinode project @github](https://github.com/nberserk/armhf-hadoop-multinode)
 -  [hadoop multinode](https://github.com/alvinhenrick/hadoop-mutinode) : serf를 이용해서 host name resolution을 하는듯. 설정을 하려면 slave의 host name 혹은 ip를 알아야 하는데 이것 설정도 꽤 귀찮은 일. serf!
 
 
 ## revision history
+
 * 2016-6-28 draft
+
 
 
 
