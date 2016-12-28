@@ -170,3 +170,5 @@ v 1.9
 Foreign Key vs OneToOneField : http://stackoverflow.com/questions/9949077/difference-between-foreignkeyuser-unique-true-and-onetoonefield
 
 
+* angular2
+editor : vs code rocks
