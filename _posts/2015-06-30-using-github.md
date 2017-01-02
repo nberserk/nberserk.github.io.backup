@@ -32,19 +32,35 @@ git push -u origin topic # push topic branch to origin
 
 포크한 repo에서 바로 작업을 하게 되면 나중에 apache/master를 rebase하기가 힘들어 진다. 그래서 토픽 브랜치를 만들어서 거기서 태스크를 위한 커밋을 하고, 준비가 되면 거기서 바로 pull request를 하고, 업스트림에 머지가 되면 그 토픽브랜치는 이제 더이상 필요가 없다. 그후 업스트림으로 부터 다시 리베이스를 하면 마스터 브랜치는 최신으로 유지가 가능하다. 
 
-```
+
+```bash
 # assume current branch is master
 git checkout -b topic # make topic branch
 ...
 git commit -m "..." 
 git push -u origin topic # push topic branch to origin
-# 이 상태에서 github상에서 pull request를 요청하면 된다. 
+# 이 상태에서 github상에서 pull request를 요청하면 된다.
+
+git checkout master
+git merge --squash topic  # merge to master ans make 1 commit
+```
+
+
+## undoing commits
+
+
+```bash
+git reset --hard <hash> # move head to the designated commit
+
 ```
 
 ## ssh key를 등록했음에도 아이디와 패스워드를 물어볼때
 git clone을 하고 난후 ssh키를 등록을 했음에도 매번 아이디와 패스워드를 물어본다면 git clone을 https로 해서 그렇다. 그럴때는 이렇게 하면 된다.
-{% highlight bash%}
+
+```bash
 git remote set-url origin git@github.com:username/repo.git
-{% endhighlight %}
+```
+
+
 
 
