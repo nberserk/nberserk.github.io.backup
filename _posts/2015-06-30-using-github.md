@@ -54,6 +54,15 @@ git reset --hard <hash> # move head to the designated commit
 
 ```
 
+## cherrypick specific file from different branch
+
+`git cherry-pick`은 커밋 단위로 가지고 오기때문에, 다른 파일의 변경사항도 같이 적용이 된다. 이럴때는 `checkout file`을 사용하면 된다.
+
+
+```bash
+git checkout <branch> -- <filename>
+```
+
 ## ssh key를 등록했음에도 아이디와 패스워드를 물어볼때
 git clone을 하고 난후 ssh키를 등록을 했음에도 매번 아이디와 패스워드를 물어본다면 git clone을 https로 해서 그렇다. 그럴때는 이렇게 하면 된다.
 
