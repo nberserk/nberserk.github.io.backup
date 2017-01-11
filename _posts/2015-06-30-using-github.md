@@ -12,15 +12,17 @@ fork 한후 upstream에 있는 변경사항을 주기적으로 싱크해야 할�
 upstream은 포크 하기전 원본 저장소를 칭하는 것
 
 ```bash
-git remote add apache git@github.com:whoever/whatever.git
-git fetch apache # update apache remote
-git rebase apache/master # rebase apache/master to current branch(master)
-# make tracking branch 이렇게하면 upstream은 apache master와 싱크를 하게 된다.
-git checkout -b upstream apache/master
+git checkout master
+git remote add upstream git@github.com:whoever/whatever.git
+git fetch upstream # update apache remote
+git rebase upstream/master # rebase upstream/master to current branch(master)
+# make tracking branch 이렇게하면 upstream은 apache master와 싱크를 하게 되고, 로컬에 unpushed commit이 생기게 된다.
+git push # git push로 내 계정의 git에 최신사항으로 업데이트 함.
+
 
 # merge upstream with master; 최신 변경 사항을 master로 가지고 온다.
-git checkout master
-git merge upstream
+#git checkout master
+#git merge upstream
 
 # make topic branch;
 git checkout -b topic # make topic branch

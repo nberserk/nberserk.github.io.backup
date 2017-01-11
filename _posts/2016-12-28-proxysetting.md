@@ -19,12 +19,6 @@ export https_proxy=http://<ip:port>
 ```
 
 
-## java cert
-
-간혹 회사에서 https 사설 인증서를 사용하는 경우가 있는데(우리회사 --), 이런 경우 인증서가 공인인증기관에서 인증된 것이 아니기 때문에 https handshake에서 에러가 난다. 이런 경우 회사 인증서를 신뢰할 수 있다고 설정을 해줘야 하는데, 맥의 경우 아래 커맨드를 실행하면 된다.
-
-`/Library/Java/JavaVirtualMachines/jdk1.7.0_75.jdk/Contents/Home/jre/lib/security$ sudo keytool -import -keystore cacerts -file ~/Desktop/samsung.cer`
-
 
 
 ## npm 
@@ -61,5 +55,31 @@ proxy = <ip:port>
 ```
 
 
+## cert
+
+회사 proxy에 사설 인증서를 사용하는 경우가 있는데(우리회사 --), 이런 경우 인증서가 공인인증기관에서 인증된 것이 아니기 때문에 https handshake에서 에러가 난다. 이럴경우 대부분의 https 통신이 실패하기 때문에 개발환경 잡기가 어렵다. 그때 어떻게 하면 환경을 잡을수 있는지 아래에 정리한다.
+
+회사는 개발자의 생산성을 저하시키는 이런 IT정책을 고수하면 안된다고 생각하는데, 보안이 이런것보다 더 중요하다고 생각하니까 이런 정책을 고수하고 있는것으로 생각된다. 개인적으로 안타깝다. 집에서는 빌드하는데 바로 될 경우도 회사에서 빌드하려고 하면 일주일이 걸리는 경우도 있다. 개발자의 생산성을 인정하는 않는 회사가 이런 정책을 고수하는 경우가 높다.
+
+### Java
+
+JDK가 설치된 폴더의 cacerts 파일에 keytool을 이용해서 추가해주면 된다. 아래처럼 
+
+`/Library/Java/JavaVirtualMachines/jdk1.7.0_75.jdk/Contents/Home/jre/lib/security$ sudo keytool -import -keystore cacerts -file ~/Desktop/samsung.cer`
+
+
+### pythn 
+
+python의 cacert가 위치한 파일을 찾아서 samsung.cer을 추가
+
+
+```bash
+# find cacert.pem in vritualenv direcgtory
+find . | grep cacert
+#./venv/lib/python2.7/site-packages/requests/cacert.pem
+# append samsung.cer to bottom of cacert.pem
+cat samsung.cer >> ./venv/lib/python2.7/site-packages/requests/cacert.pem
+
+```
 
 
