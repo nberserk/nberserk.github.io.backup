@@ -52,9 +52,18 @@ git merge --squash topic  # merge to master ans make 1 commit
 
 
 ```bash
-git reset --hard <hash> # move head to the designated commit
-
+git reset --hard <dest_commithash> # move head to the designated commit
+git reset --hard HEAD^1 # reset last commit
+# HEAD^1 : parent of head
 ```
+
+
+## revision selection
+
+
+- `HEAD^1` : parent of head
+- `HEAD^2` : 2nd parent of head. only valid for merge commit
+- `HEAD@{n}` : nth prior head
 
 ## cherrypick specific file from different branch
 
