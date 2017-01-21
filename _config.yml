@@ -15,8 +15,11 @@ kramdown:
   input: GFM
   syntax_highlighter: rouge
 
+paginate: 10
+
 gems:
   - jekyll-gist
+  - jekyll-paginate
 
 sass:
     style: :compressed
