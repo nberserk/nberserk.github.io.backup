@@ -1,0 +1,38 @@
+<div class="container-fluid">
+    <div class="row ">
+        <div class="col-xs-2"></div>
+        <div class="col-xs-8">
+
+            <!-- Twitter -->
+            <a href="https://twitter.com/share" class="twitter-share-button" data-via="vdaubry">Tweet</a>
+            <script>
+                !function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https'; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = p + '://platform.twitter.com/widgets.js'; fjs.parentNode.insertBefore(js, fjs); } } (document, 'script', 'twitter-wjs');
+            </script>
+
+            <!-- Google + -->
+            <span class="g-plus" data-action="share" data-annotation="bubble"></span>
+            <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+            <div class="fb-like" data-href="{{site.url}}{{page.url}}" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true"
+                data-share="true" style="position: relative; top: -8px; left: 33px;" ></div>
+
+        <!-- Facebook -->
+        <div id="fb-root"></div>
+        <script>
+            (function (d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) return;
+                js = d.createElement(s); js.id = id;
+                js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8&appId=128779260536327";
+                fjs.parentNode.insertBefore(js, fjs);
+            } (document, 'script', 'facebook-jssdk'));
+        </script>
+
+        <!--<div class="fb-share-button" data-href="{{site.url}}{{page.url}}" data-layout="button_count" data-size="small" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse">Share</a></div>-->
+
+
+
+    </div>
+</div>
+<div class="col-xs-2"></div>
+</div>
