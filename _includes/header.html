@@ -39,6 +39,7 @@
               {% assign pages_list = site.pages %}
               {% assign group = 'navigation' %}
               {% include JB/pages_list %}
+              <li><a href="{{ "/feed.xml" | prepend: site.baseurl }}" ><img src="{{ "assets/rssicon.png" | prepend: site.baseurl }}"></a></li>
               <!-- <li class="active"><a href="/">Blog</a></li>
               <li><a href="/about">About</a></li>
               <li><a href="/categories.html">Category</a></li>
