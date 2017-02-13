@@ -4,7 +4,8 @@ title:  "proxy setting"
 tags: proxy
 ---
 
-어느 정도의 규모가 있는 회사는 보통 보안 및 관리상의 이유로 proxy를 많이 사용한다. 각 툴마다 설정하는 방법등이 상이해서 여기에 정리해 보고자 한다. 
+어느 정도의 규모가 있는 회사는 보통 보안 및 관리상의 이유로 proxy서버를 많이 사용한다. 각 툴마다 설정하는 방법등이 상이해서 매번 설정에 애를 먹기에, 여기에 정리해 보고자 한다. 
+
 
 
 ## general
@@ -57,7 +58,9 @@ proxy = <ip:port>
 
 ## cert
 
-회사 proxy에 사설 인증서를 사용하는 경우가 있는데(우리회사 --), 이런 경우 인증서가 공인인증기관에서 인증된 것이 아니기 때문에 https handshake에서 에러가 난다. 이럴경우 대부분의 https 통신이 실패하기 때문에 개발환경 잡기가 어렵다. 그때 어떻게 하면 환경을 잡을수 있는지 아래에 정리한다.
+회사 proxy에 사설 인증서를 사용하는 경우가 있는데(우리회사 --), 이런 경우 인증서가 공인인증기관에서 인증된 것이 아니기 때문에 https handshake에서 에러가 난다. 해킹 기법의 하나인 [main in the middle](https://en.wikipedia.org/wiki/Man-in-the-middle_attack) 을 회사가 하고 있는 것이다. 이런 회사의 경우 모든 패킷은 회사가 들여다 볼 수 있기때문에 privacy 침해의 소지가 다분하다. 
+
+이럴때 https 통신이 실패하지 않게 하려면 어떤 설정이 필요한지 각각의 경우에 대해서 정리해 봤다. 
 
 ### Java
 
@@ -66,7 +69,7 @@ JDK가 설치된 폴더의 cacerts 파일에 keytool을 이용해서 추가해�
 `/Library/Java/JavaVirtualMachines/jdk1.7.0_75.jdk/Contents/Home/jre/lib/security$ sudo keytool -import -keystore cacerts -file ~/Desktop/samsung.cer`
 
 
-### pythn 
+### python 
 
 python의 cacert가 위치한 파일을 찾아서 samsung.cer을 추가
 
