@@ -10,6 +10,33 @@ categories: jekyll github blog
 
 이제 알찬 컨텐츠를 넣는 일만 남았다.
 
+
+여러가지 링크 예제
+
+```
+{% raw %}
+[bash script]({% post_url 2015-06-11-hadoop-intro %})
+![My helpful screenshot]({{ site.url }}/assets/screenshot.jpg)
+{{ site.baseurl }}{% post_url 2010-07-21-name-of-post %}
+{% endraw %}
+```
+
+gist 는 아래처럼 삽입할 수 있음.
+
+```
+{% raw %}
+{% gist parkr/c08ee0f2726fd0e3909d %}
+{% endraw %}
+```
+
+escape는 raw/endraw block으로 감싸주면 된다.
+
+```
+{{ "{% raw" }} %}
+
+{{ "{% endraw"}} %}
+```
+
 References:
 
 - 지원하는 code highlight 언어 리스트 : [pygment 홈페이지](http://pygments.org/languages/)
