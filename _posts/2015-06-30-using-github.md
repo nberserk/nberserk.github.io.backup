@@ -27,19 +27,19 @@ git push # git push로 내 계정의 git에 최신사항으로 업데이트 함.
 # make topic branch;
 git checkout -b topic # make topic branch
 git push -u origin topic # push topic branch to origin
-# 이 상태에서 github상에서 pull request를 요청하면 된다. 
+# 이 상태에서 github상에서 pull request를 요청하면 된다.
 ```
 
 ## make topic branch
 
-포크한 repo에서 바로 작업을 하게 되면 나중에 apache/master를 rebase하기가 힘들어 진다. 그래서 토픽 브랜치를 만들어서 거기서 태스크를 위한 커밋을 하고, 준비가 되면 거기서 바로 pull request를 하고, 업스트림에 머지가 되면 그 토픽브랜치는 이제 더이상 필요가 없다. 그후 업스트림으로 부터 다시 리베이스를 하면 마스터 브랜치는 최신으로 유지가 가능하다. 
+포크한 repo에서 바로 작업을 하게 되면 나중에 apache/master를 rebase하기가 힘들어 진다. 그래서 토픽 브랜치를 만들어서 거기서 태스크를 위한 커밋을 하고, 준비가 되면 거기서 바로 pull request를 하고, 업스트림에 머지가 되면 그 토픽브랜치는 이제 더이상 필요가 없다. 그후 업스트림으로 부터 다시 리베이스를 하면 마스터 브랜치는 최신으로 유지가 가능하다.
 
 
 ```bash
 # assume current branch is master
 git checkout -b topic # make topic branch
 ...
-git commit -m "..." 
+git commit -m "..."
 git push -u origin topic # push topic branch to origin
 # 이 상태에서 github상에서 pull request를 요청하면 된다.
 
@@ -50,10 +50,11 @@ git merge --squash topic  # merge to master ans make 1 commit
 
 ## undoing commits
 
+git reset 명령을 하게 되면 커밋은 돌려지고 HEAD의 체인지가 워킹 디렉토리에 반영이 되지만(그래서 원복을 할 기회가 있음.), --hard를 붙이면 워킹 디렉토리의 변경사항은 없다. 따라서 --hard옵션은 조심해서 쓸것.
 
 ```bash
 git reset --hard <dest_commithash> # move head to the designated commit
-git reset --hard HEAD^1 # reset last commit
+git reset (--hard) HEAD^1 # reset last commit
 # HEAD^1 : parent of head
 ```
 
