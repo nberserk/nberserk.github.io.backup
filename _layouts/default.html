@@ -5,12 +5,37 @@
 
   <body>
 
+    
     {% include header.html %}
     <div class="container">
-        {{ content }}
+      <!--google search-->
+      <script>
+      (function() {
+        var cx = '017825846720687632976:mewydm1pbgi';
+        var gcse = document.createElement('script');
+        gcse.type = 'text/javascript';
+        gcse.async = true;
+        gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(gcse, s);
+      })();
+    </script>
+    <gcse:search></gcse:search>
+    <!--google search-->
+      <div class="col-md-12">{{ content }}</div>
+      <!--<div class="col-md-4">
+        <div class="panel panel-default">
+          <div class="panel-heading"> <strong class="">Signdd-up</strong></div>
+          <div class="panel-body" id="search" >right panel</div>
+        </div>
+      </div>-->
+    </div>
+    <div class="container">
+        
 
         {% include footer.html %}
     </div>
+
 
 
     <!-- GA-->
