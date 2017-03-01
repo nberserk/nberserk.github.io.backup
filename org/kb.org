@@ -84,7 +84,8 @@ find . -size -1k -delete
 #+BEGIN_SRC bash
 scp -r conf s1:/usr/local/spark-1.3.0-bin-hadoop2.4/ # recursively copy directory to another machine
 #+END_SRC
-
+** encoding, iconv
+iconv --from-code EUCKR in.file > out.file
 * python
 
 print("category=%s, url=%s, fn=%s" % (category, url, fn))
