@@ -60,11 +60,11 @@ Host *
 ## proxyCommand
 
 클라우드를 사용하면 회사 방화벽때문에 connector(bastion) 서버에 우선 접속한 뒤, 실제 서버로 연결해야 하는 경우가 많이 있다. 예를 들면 아래와 같은 경우.
-                  
-```                  
+
+```
  +----------+         +---------+        +-----------+
  |localhost | <---->  |bastion  |  <---> | myserver  |
- +----------+         +---------+        +-----------+                      
+ +----------+         +---------+        +-----------+
 ```
 이런 경우 ssh를 두번 타고 들어가면 myserver까지 접속은 가능하다. 아래 처럼. -tt는 tty를 강제할당하는 명령임.
 
@@ -81,6 +81,21 @@ Host myserver
      ProxyCommand ssh -qaY bas 'nc -w 14400 %h %p'
 ```
 
+## run multiple bash commands with ssh
+
+bash의 [here document](http://tldp.org/LDP/abs/html/here-docs.html) 를 사용하면 된다. 아래 예제에서 `-o SendEnv`는 로컬의 환경변수를 remote로 전달하기 위해서 사용했다.
+
+```bash
+ssh -o SendEnv=AWS_ACCESS_KEY_ID -o SendEnv=AWS_SECRET_ACCESS_KEY dev <<EOF
+echo $AWS_ACCESS_KEY_ID, $AWS_SECRET_ACCESS_KEY
+cd /home/ec2-user
+sudo aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+sudo aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+sudo aws configure set default.region us-west-2
+ll
+EOF
+```
+
 
 ## Reference
 - [ssh proxy](http://backdrift.org/transparent-proxy-with-ssh)
@@ -91,3 +106,4 @@ Host myserver
 * 2015/8/24 initial draft
 * 8/28 ControlPath added
 * 9/1 proxy command added
+* 2017/3/29 added `run multiple bash commands`

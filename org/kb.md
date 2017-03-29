@@ -1,14 +1,16 @@
-* bash
-** strict mode
-#+BEGIN_SRC bash
+# bash
+## strict mode
+
+```bash
 #!/bin/bash
 set -euo pipefail
-#+END_SRC
+```
 
-** if
-#+BEGIN_SRC sh
+## if
+
+```bash
     # checking first arg specified or not
-    if [ -z "$1" ]; then    
+    if [ -z "$1" ]; then
         folder=sparkjob
     else
         folder=$1
@@ -31,65 +33,72 @@ set -euo pipefail
     else
         echo 'not equal'
     fi
+```
 
-
-#+END_SRC
-
-#+RESULTS:
+```
 | not   | equal |
 | equal |       |
+```
 
-** nohup
+## nohup
 DO NOT terminate background job, when i log off.
-#+BEGIN_SRC bash
+
+```bash
 nohup ./script.sh < inputFile.txt > ./logFile 2>&1 &
 nohup /path/to/command-name arg1 arg2 &
-#+END_SRC
+```
 
-** sed
+## sed
 text replace tool. when used correctly, it's awesome!
-#+BEGIN_SRC bash
+
+```bash
 echo 'day break' | sed 's/day/night/' # night break
 sed -i 's/day/night/' org_file # substitute and save to file
 sed -i 's:day:night/' org_file # just same with above. used different delimeter
 sed -i '/^PATTERN/ s:.*:entire row changed' org_file # perform replace for PATTERN matching lines
 sed -i "s/day/$MASTER/" org_file # replace with env var $MASTER
-#+END_SRC
+```
 
-** split comma separated string
+## split comma separated string
 
-#+BEGIN_SRC bash
+```bash
 IFS=',' read -r -a array <<< "a,b,c"
 for i in "${array[@]}"
 do
     echo "$i"
 done
-#+END_SRC
+```
 
-** find script directory
+## find script directory
 
-#+BEGIN_SRC bash
+```bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-#+END_SRC
+```
 
-** find
-#+BEGIN_SRC bash
+## find
+
+```bash
 # ll under 1K files
 find . -size -1k | xargs ls -l
 #delete files samller than 1K
 find . -size -1k -delete
+```
 
-#+END_SRC
-** scp 
-#+BEGIN_SRC bash
+## ssh, scp
+
+```bash
+
 scp -r conf s1:/usr/local/spark-1.3.0-bin-hadoop2.4/ # recursively copy directory to another machine
-#+END_SRC
-** encoding, iconv
+```
+
+## encoding, iconv
 iconv --from-code EUCKR in.file > out.file
-* python
+
+# python
 
 print("category=%s, url=%s, fn=%s" % (category, url, fn))
-** getopt
+## getopt
+
 
 * aws
 ** emr
@@ -99,7 +108,7 @@ print("category=%s, url=%s, fn=%s" % (category, url, fn))
 * avro
 - http://avro.apache.org/docs/1.7.7/gettingstartedjava.html
 
-* parquet 
+* parquet
 parquet은 columnar storage format
 
 
@@ -132,7 +141,7 @@ df.schema.fieldNames.contains("uidd")
 * emacs
 - C-x C-e ; eval lisp last lexpr
 ** artist mode
-you can draw rectangle using ascii. 
+you can draw rectangle using ascii.
 #+BEGIN_SRC lisp
 ;; enable mouse right button
 (eval-after-load "artist"
@@ -141,7 +150,7 @@ you can draw rectangle using ascii.
 #+END_SRC
 
 * spark sql
-- subquery 
+- subquery
 #+BEGIN_SRC sql
 select value, cnt from  ( select value, count(*) as cnt from user group by d order by d ) inner
 where inner.c > 5
@@ -154,7 +163,7 @@ gem install --user-install --bindir ~/bin --no-document --pre --verbose jekyll
 https://github.com/jekyll/jekyll/issues/3984
 
 * git
-- copy specific branch or tag to new git 
+- copy specific branch or tag to new git
 old는 docker official git 이고, new는 비어있는 로컬 git.
 #+BEGIN_SRC bash
 git clone ssh://darren.ha@10.240.xx.xx:29418/docker
