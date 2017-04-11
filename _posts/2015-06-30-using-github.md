@@ -82,6 +82,18 @@ git clone을 하고 난후 ssh키를 등록을 했음에도 매번 아이디와 
 git remote set-url origin git@github.com:username/repo.git
 ```
 
+## commit a file and ignore content changes
 
+설정파일의 경우, gradle.propertes 라던가, 로컬에서 수정할 필요는 있으나, 변경사항을 업스트림으로 반영하면 안되는 경우가 있다. 이럴때는 .gitignore를 사용할 수도 없고 매번 수동으로 커밋되지 않게 했다가 커밋하고 나면 다시 수정을 해야 하니까 불편하다. 이럴때 아래 명령어를 사용하면 변경사항은 무시 된다.
+
+from http://stackoverflow.com/questions/3319479/git-can-i-commit-a-file-and-ignore-the-content-changes
+
+```bash
+# <file> 변경사항 무시
+git update-index --assume-unchanged <file>
+
+# 원복할때
+git update-index --no-assume-unchanged <file>
+```
 
 
