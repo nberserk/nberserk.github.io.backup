@@ -96,4 +96,12 @@ git update-index --assume-unchanged <file>
 git update-index --no-assume-unchanged <file>
 ```
 
+## upstream 복구 하기
+
+실수로 upstream git을 지워버렸고, 로컬에는 포크된 git이 존재한다. 그렇다면 이상황에서 어떻게 복원할 수 있을까?
+우선 같은 이름의 upstream git을 생성한후에 아래 명령어를 실행해주면 아주 쉽게 복원 가능
+
+```bash
+git push <upstream> --mirror
+```
 
