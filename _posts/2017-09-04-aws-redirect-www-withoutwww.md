@@ -12,8 +12,11 @@ www.domain.com은 domain.com의 서브 도메인이라고 할 수 있다.
 - www.domain.com 과 domain.com 2개의 s3 bucket 생성. 이름은 꼭 도메인 네임과 같아야 함.
 - route53에서 www.domain.com의 record set 생성. type은 'A'로 하고, www.domain.com의 s3 bucket으로 alias를 건다. 아래 스샷 참조.
 ![image](https://user-images.githubusercontent.com/900639/30008944-36364c9a-915f-11e7-93bc-1c4d3a9066fe.png)
+
 - aws>s3> www.domain.com으로 가서 properties tab의 static web hosting 을 인에이블하고 redirection을 domain.com으로 해준다.
+
 ![image](https://user-images.githubusercontent.com/900639/30008999-b6a9f0de-915f-11e7-8ae9-4ffde5898281.png)
+
 - 시간이 얼마 지난후, www.domain.com을 들어가면 domain.com으로 redirect되는 것을 확인 할 수 있다.
 
 
