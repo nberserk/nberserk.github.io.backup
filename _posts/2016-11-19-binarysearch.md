@@ -5,17 +5,23 @@ tags: algorithm
 category: algorithm
 ---
 
+sorted array에서 타겟값을 찾는것. 반으로 나누어서 탐색공간을 1/2씩 줄여서 O(logN)만에 원하는 값을 찾을 수 있음. 엄청나게 느리게 증가하는 것임. 70억개중 하나 찾는 것은 33번만의 분기만에 찾을 수 있음.
 
 ## basic
 
-sorted array에서 타겟값을 찾는것. 반으로 나누어서 탐색공간을 1/2씩 줄여서 O(logN)만에 원하는 값을 찾을 수 있음. 엄청나게 느리게 증가하는 것임. 70억개중 하나 찾는 것은 33번만의 분기만에 찾을 수 있음.
+아래가 기본형 binary search이다. sorted array a에서 target값을 찾는 것이며 없으면 -1을 리턴하는 기본형.
+
+기본적인 로직.
+
+1. a[mid] > target, target이 왼쪽에 있음. -> hi를 mid-1로 치환
+1. a[mid] < target, target값이 오른쪽에 있음. -> lo를 mid+1로 치환
 
 ```java
     int binarySearch(int target, int[] a){
 		int lo = 0;
 		int hi = a.length - 1;
 		while (lo<=hi) { // notice = is there.
-			int mid = lo + (hi-lo)/2;
+			int mid = lo + (hi-lo)/2; // to prevent overflow, (hi-lo) used
 			if (a[mid] > target ) {
 				hi = mid-1;
 			}else if (a[mid] < target) {
@@ -29,57 +35,67 @@ sorted array에서 타겟값을 찾는것. 반으로 나누어서 탐색공간�
 	}
 ```
 
-## search range of target value (with duplicates)
+## lower bound
 
-`1, 2, 3, 3, 3, 6, 7, 9, 10` 처럼 중복된 수가 있을때 특정 값의 개수를 알려면 어떻게 해야 할까? basic처럼 해서 왼쪽, 오른쪽으로 이동하면서 범위를 찾을 수 있지만 이렇게 하면 time complexity가 O(N)이 된다.(중복된 수가 많다고 가정해 보라.) 이럴때는 바이너리서치를 2번해서 한번은 시작점을 찾고 또한번은 끝점을 찾으면 해당 값의 range를 알 수 있다.
+> 1, 2, 3, 4, 4, 4, 7, 8, 9, 10
 
-요점은 start점을 찾을때는 타겟값을 만나면 hi를 m으로 변경하고, end점을 찾을때는 lo를 m으로 변경한다는 사실.
+이제 첫번째 변형. 배열 a에서 중복되는 값이 있을 수 있고 이중에서 가장 첫번째(왼쪽) 값을 찾는다고 생각해보자. 어떻게 변형해야 할까.
+
+기본적으로 (2)는 기본형과 동일하지만 1/3번째가 아래처럼 바뀜.
+1. a[mid] > target, target이 왼쪽에 있음. -> hi를 mid로 치환. 여기서 -1을 하지 않는 이유는 target값이 배열의 최소값보다 작으면 index underflow가 나기 때문임.
+1. a[mid] < target, target값이 오른쪽에 있음. -> lo를 mid+1로 치환
+1. a[mid] == target, hi를 mid로 치환.
+ 	1. mid의 왼쪽에 동일값이 있을 수 있으므로 오른쪽을 버리지만 한편으로 이것이 마지막 target값일 수도 있으니 -1을 더하진 않음.
+
 
 
 ```java
-    int binarySearchStart(int[] a, int key) {
-		int lo = 0;
-		int hi = a.length - 1;
-
-		while (lo < hi) {
-			int m = lo + (hi-lo) / 2;
-			if (a[m] > key) {
-				hi = m - 1;
-			} else if (a[m] < key) {
-				lo = m + 1;
-			} else {
-				hi = m;
+	int lowerBound(int lo, int hi, int[] a, int key){
+		while (lo<hi) {
+			int mid = lo + (hi-lo)/2;
+			if (a[mid] < key) {
+				lo = mid+1;
+			}else{
+				hi = mid;
 			}
 		}
+        if(a[lo]==key) return lo;
+        return -1;
+	}
 
-		if (a[lo] == key) // what if key doesn't exist
-			return lo;
+```
 
-		return -1;
-	    }
 
-    int binarySearchEnd(int[] a, int key) {
-		int lo = 0;
-		int hi = a.length - 1;
 
-		while (lo < hi) {
-			int m = (lo + hi + 1) / 2;
-			if (a[m] > key) {
-				hi = m - 1;
-			} else if (a[m] < key) {
-				lo = m + 1;
-			} else {
-				lo = m;
+## uppper bound
+> 1, 2, 3, 4, 4, 4, 7, 8, 9, 10
+
+이제 lower_bound와 반대로, 배열 a에서 중복되는 값이 있을 수 있고 이중에서 가장 마지막(오른쪽) 값을 찾는다고 생각해보자. 어떻게 변형해야 할까.
+
+(1)는 기본형과 동일하지만 2/3번째가 아래처럼 바뀜.
+1. a[mid] > target, target이 왼쪽에 있음. -> hi를 mid-1로 치환.
+1. a[mid] < target, target값이 오른쪽에 있음. -> lo를 mid로 치환. mid+1로 치환하지 않는 이유는 index overflow가 나기 때문임.
+1. a[mid] == target, lo를 mid로 치환.
+ 	1. mid의 오른쪽에 동일값이 있을 수 있으므로 왼쪽을 버리지만 한편으로 이것이 마지막 target값일 수도 있으니 +1을 더하진 않음.
+
+
+```java
+	int upperBound(int lo, int hi, int[] a, int key){
+		while (lo<hi) {
+			int mid = lo+(hi-lo+1)/2;
+			if (a[mid]>key){
+                hi = mid-1;
+            }else{
+				lo = mid;
 			}
 		}
-
-		if (a[lo] == key)
-			return lo;
-
-		return -1;
-
+        if(a[lo]==key) return lo;
+        return -1;
 	}
 ```
+
+
+
 
 ## in a rotated array
 
@@ -90,7 +106,7 @@ sorted array에서 타겟값을 찾는것. 반으로 나누어서 탐색공간�
         int lo = 0;
         int hi = a.length-1;
         while(lo<=hi){
-            int m = (lo+hi)/2;    
+            int m = (lo+hi)/2;
             if(key==a[m]) return m;
 
             if(a[lo]<=a[m]){
@@ -108,41 +124,6 @@ sorted array에서 타겟값을 찾는것. 반으로 나누어서 탐색공간�
     }
 ```
 
-
-## biggest satisfying condition
-
-약간 말을 바꾸어서 sorted array에서 target 보다 작은 수중 가장 큰 값을 찾으려면 어떻게 해야할까. `a[mid]<target`이면 `lo=mid+1` 대신에 `lo=mid`를 한다. 그 이유는 a[mid]가 largest일 수 있기 때문. 나머지 경우는 같다.
-
-
-이것을 일반화 하면 특정 조건을 만족하는 가장 큰 인덱스를 구하는 것으로 볼 수 있고 아래처럼 일반화 할 수 있다. mid를 구할때 `+1`을 해주는 것은 lo=0,hi=1일때 생각하면 루프를 빠져나가지 않기 때문에 +1을 더 해준다.
-
-
-```java
-    int binarySearchBiggestSatisfyingCondition(int lo, int hi, IValidator validator){		
-		while (lo<hi) {
-			// special
-			int mid = lo + (hi-lo+1)/2; // notice +1 added, to work around infinite loop
-			
-			if (validator.validate(mid)){
-				lo = mid;
-			}else {
-				hi = mid-1;
-			}
-		}
-		
-		if (validator.validate(lo)) {
-			return lo ;
-		}		
-		return -1;		
-	}
-```
-
-
-## smallest satisfying condition
-
-
-
-
 ## problems
 
 - [two sum II @leetcode](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/)
@@ -153,12 +134,15 @@ sorted array에서 타겟값을 찾는것. 반으로 나누어서 탐색공간�
 - [find peak element @leetcode](https://leetcode.com/problems/find-peak-element/)
 - [median of two sorted array @leetcode]( https://leetcode.com/problems/median-of-two-sorted-arrays/) : [explanation](https://discuss.leetcode.com/topic/4996/share-my-o-log-min-m-n-solution-with-explanation)
 
+- [find Kth smallest piar distance @leetcode](- [find peak element @leetcode](https://leetcode.com/problems/find-peak-element/))
+
 
 ## reference
 
 - [tutorial @topcoder](https://www.topcoder.com/community/data-science/data-science-tutorials/binary-search/)
-- [my implementation & test cases](https://github.com/nberserk/codejam/blob/master/java/src/main/java/crackcode/binarysearch/BinarySearch.javan)
+- [my implementation & test cases](https://github.com/nberserk/codejam/blob/master/java/src/main/java/crackcode/binarysearch/BinarySearch.java)
 
 ## history
 
 - 11/28/2016 , binarySearchRotatedArray/searchRange added
+- 11/7/2017, lowerBound/upperBound added
