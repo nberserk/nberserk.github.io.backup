@@ -49,7 +49,13 @@ PUT twitter
 ![kibana time line]( {{site.url}}/assets/kibana-visualbuilder.png)
 
 
+## query string
 
+
+```
+worker:seoul*    : worker filed가 seoul* 를 만족하는 쿼리
+
+```
 
 
 
