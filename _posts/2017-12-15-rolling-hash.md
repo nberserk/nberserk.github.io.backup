@@ -10,8 +10,8 @@ published: true
 ## intuition
 
 ```
-pattern = abc
-text = bcabc
+pattern = "abc"
+text = "bcabc"
 P = len(pattern)
 T = len(text)
 ```
@@ -39,7 +39,7 @@ h(text[1:2]) =         'c'30^2 + 'a'*30 + 'b'*30^0
 
 > h(n) = base*{h(n-1)-p[n]*30^(P-1)} + p[n+P]
 
-이때 한가지 주의할 점은 hash가 같다고 해도 문자열은 다를 수 있으므로 실제로 한번 체크를 해줘야 한다는 것이다.
+이때 한가지 주의할 점은 hash가 같다고 해도 문자열은 다를 수 있으므로 실제로 한번 체크를 해줘야 한다는 것이다. 이렇게 하면 time complexity를 O(T+P) 정도로 줄 일 수 있다.
 
 ## problem
 
