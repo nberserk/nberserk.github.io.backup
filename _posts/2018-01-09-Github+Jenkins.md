@@ -2,7 +2,7 @@
 layout: post
 title:  "Github + Jenkins"
 tags: spring
-published: false
+published: true
 ---
 
 github PR을 테스트 할 수 있는 Jenkins job을 만들어 보자. 비교적 간단하지만 빈약한 문서, 여러가지 조합시 버그로 인한 exception등으로 결코 쉽지 않은 작업이었다.
