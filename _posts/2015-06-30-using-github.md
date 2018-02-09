@@ -58,9 +58,20 @@ git reset (--hard) HEAD^1 # reset last commit
 # HEAD^1 : parent of head
 ```
 
+## pathspec
+
+git에서 파일을 지칭하고 싶을때 매번 풀 패스를 써주면 길어서 번거러울때가 있다. 이럴때 pathspec을 이용해서 줄일 수 있다. 잘 사용하면 아주 유용하다. [pathspec](https://git-scm.com/docs/gitglossary.html#gitglossary-aiddefpathspecapathspec) 참고.
+
+```
+# java파일만 리스트 업
+git log -p -- **/*.java
+
+#abc folder하위 모든 파일
+git log -p -- abc/**
+
+```
 
 ## revision selection
-
 
 - `HEAD^1` : parent of head
 - `HEAD^2` : 2nd parent of head. only valid for merge commit
