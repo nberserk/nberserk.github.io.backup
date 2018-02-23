@@ -1,4 +1,9 @@
 # bash
+
+```bash
+bash -x script.sh # debug script
+```
+
 ## strict mode
 
 ```bash
@@ -97,88 +102,7 @@ iconv --from-code EUCKR in.file > out.file
 # python
 
 print("category=%s, url=%s, fn=%s" % (category, url, fn))
+
 ## getopt
 
 
-* aws
-** emr
-- doesn't run when no default VPC is absent. https://aws.amazon.com/premiumsupport/knowledge-center/deleted-default-vpc/
-- default vpc's 'DNS hostname' should be 'yes'. otherwise emr cluster will be terminated with error.
-
-* avro
-- http://avro.apache.org/docs/1.7.7/gettingstartedjava.html
-
-* parquet
-parquet은 columnar storage format
-
-
-schema resolution
-if the reader's record schema has a field that contains a default value, and writer's schema does not have a field with the same name, then the reader should use the default value from its field.
-if the reader's record schema has a field with no default value, and writer's schema does not have a field with the same name, an error is signalled.
-
-avro spec
-https://avro.apache.org/docs/1.7.7/spec.html
-
-- http://www.slideshare.net/cloudera/hadoop-summit-36479635?qid=ae3b9f6c-0e8d-4403-8048-46c1fe3a4b47&v=qf1&b=&from_search=3
-  - size 33p, speed comparison 34p
-
-convert existing data into parquet :  http://blog.cloudera.com/blog/2014/05/how-to-convert-existing-data-into-parquet/
-
-1.4 parquet loading bug, https://issues.apache.org/jira/browse/SPARK-6566
-
-
-// load and check column existence
-val df = sqlContext.parquetFile("/test.parquet")
-df.schema.fieldNames.contains("uidd")
-
-
-* org
-- file link (org-insert-link)
-** babel
-- insert code block. <s <tab>
-- run code block; C-c C-c
-
-* emacs
-- C-x C-e ; eval lisp last lexpr
-** artist mode
-you can draw rectangle using ascii.
-#+BEGIN_SRC lisp
-;; enable mouse right button
-(eval-after-load "artist"
-   '(define-key artist-mode-map [(down-mouse-3)] 'artist-mouse-choose-operation)
-   )
-#+END_SRC
-
-* spark sql
-- subquery
-#+BEGIN_SRC sql
-select value, cnt from  ( select value, count(*) as cnt from user group by d order by d ) inner
-where inner.c > 5
-#+END_SRC
-
-* jekyll
-on El-Capitan
-gem install --user-install --bindir ~/bin --no-document --pre --verbose jekyll
-
-https://github.com/jekyll/jekyll/issues/3984
-
-* git
-- copy specific branch or tag to new git
-old는 docker official git 이고, new는 비어있는 로컬 git.
-#+BEGIN_SRC bash
-git clone ssh://darren.ha@10.240.xx.xx:29418/docker
-cd docker
-git remote add github https://github.com/docker/docker.git
-git fetch github
-bit merge v1.10.2
-git push origin master
-#+END_SRC
-
-* django
-v 1.9
-** model
-Foreign Key vs OneToOneField : http://stackoverflow.com/questions/9949077/difference-between-foreignkeyuser-unique-true-and-onetoonefield
-
-
-* angular2
-editor : vs code rocks
