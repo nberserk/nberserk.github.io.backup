@@ -11,9 +11,11 @@ published: true
 
 ## schema
 
+스키마는 단순화하여 아래처럼 정의 하고..
+
 ![schema]({{site.url}}/assets/fallback-erd.png)
 
-[sql 스크립트]({{site.url}}/assets/fallback.sql) 도 첨부.
+[sql 스크립트]({{site.url}}assets/fallback.sql) 도 첨부.
 
 
 ## test data
@@ -25,12 +27,12 @@ INSERT INTO LOCALE(locale) VALUES ('en'), ('en-US'), ('ko-KR'), ('ko');
 INSERT INTO STRING(fqdn) VALUES ('store.hello');
 SET @sid = LAST_INSERT_ID();
 select * from STRING;
-INSERT INTO LOCALIZED_STRING(string_id, locale_id, `1i18n_string`) VALUES (1, 1, 'hello-en'), (1,2,'hello en-US'), (1,3,'안녕하세요 ko-KR'), (1,4, 'hello ko');
+INSERT INTO LOCALIZED_STRING(string_id, locale_id, `1i18n_string`) VALUES (@sid, 1, 'hello-en'), (@sid,2,'hello en-US'), (@sid,3,'안녕하세요 ko-KR'), (@sid,4, 'hello ko');
 ```
 
 ## fallback logic
 
-sql 문의 union 문을 이용해서 fallback을 아래처럼 구현하면 된다. 포인트는 `sequence` 변수로 우선순위를 준다는 사실. 아래에서 ORDER 부분을 빼고 실행하면 2줄이 나오는데
+sql 문의 union 문을 이용해서 fallback을 아래처럼 구현하면 된다. 포인트는 `sequence` 변수로 우선순위를 준다는 사실. 아래에서 ORDER 부분을 빼고 실행하면 2줄이 나오는데 `LIMIT 1`으로 우선순위가 높은 것남 남기는 것임.
 
 ```sql
 SELECT 1 as seq, LS.`1i18n_string` FROM STRING S
