@@ -55,14 +55,14 @@ github PR을 테스트 할 수 있는 Jenkins job을 만들어 보자. 비교적
 ### 기타
 
 - log 파일을 tail로 잡으면서 설정하기, 문서도 잘 없고, 로그로 유추해서 설정하는게 시간을 단축할 수 있는 길임.
-- freestyle project로 job을 만들고 Build>Invoke top-level maven targets으로 해야 에러가 안남. maven project로 빌드를 돌리면 https://github.com/jenkinsci/ghprb-plugin/issues/618 이런 에러가..
+- freestyle project로 job을 만들고 Build>Invoke top-level maven targets으로 해야 에러가 안남. maven project로 빌드를 돌리면  [이런 에러가.](https://github.com/jenkinsci/ghprb-plugin/issues/618)
 
 
 ## References
 
-- http://yaks-all-the-way-down.com/2016/04/22/Presenting-Git-Hub-Pull-Request-Builder.html#Organization : 이게 가장 잘 되어 있는 reference 였음. 그나마..
-- https://jakubstas.com/github-and-jenkins-pull-request-checking/#.WlVLMZP1Vrx
-- https://gist.github.com/ostinelli/972cfdb4bce51d428d3b
+- [이게 가장 잘 되어 있는 reference 였음. 그나마..](http://yaks-all-the-way-down.com/2016/04/22/Presenting-Git-Hub-Pull-Request-Builder.html#Organization )
+- <https://jakubstas.com/github-and-jenkins-pull-request-checking/#.WlVLMZP1Vrx>
+- <https://gist.github.com/ostinelli/972cfdb4bce51d428d3b>
 
 
 
