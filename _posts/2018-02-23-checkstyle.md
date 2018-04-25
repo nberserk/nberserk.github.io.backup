@@ -69,6 +69,12 @@ code style을 강제하는 방법은 report를 생성하여 공유하거나, 빌
             </plugin>
 ```
 
+## checkstyle in multi module project
+
+ 만약 multi-module project 라면 같은 설정을 sub module 마다 해줘야 하기 때문에, checkstyle을 실행하는 모듈을 만들고 다른 모듈이 이것을 사용하게 디펜던시를 걸면 공용화 할 수 있다.
+ 요기에 예시가 있으니 참고.
+ <https://maven.apache.org/plugins/maven-checkstyle-plugin/examples/multi-module-config.html>
+
 
 
 
@@ -76,6 +82,9 @@ code style을 강제하는 방법은 report를 생성하여 공유하거나, 빌
 
 - [checkstyle](ttp://checkstyle.sourceforge.net/index.html)
 
+## revision history
+
+- 2018/4/25, checkstyle in multi module project added
 
 
 
